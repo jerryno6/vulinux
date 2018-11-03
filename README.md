@@ -1,5 +1,5 @@
 # vulinux
-a repository about linux installation
+a repository about linux installation & Docker
 - How to setup docker, compose, dotnet on fresh Ubuntu 18.04.1
 https://github.com/jerryno6/vulinux/blob/master/setup_ubuntu_18.04.1
 
