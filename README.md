@@ -1,6 +1,6 @@
 # vulinux
 a repository about linux installation
-If you have created a new ubuntu 18.04.1, you can run this bash file to download and setups dockers + net core + AZ CLI
+1. If you have created a new ubuntu 18.04.1, you can run this bash file to download and setups dockers + net core + AZ CLI
 - ssh username@192.168.1.10 .  //ssh to server
 - touch setup.sh    //create running file
 - chmod a+x setup.sh  //allow run file bash
@@ -9,3 +9,11 @@ If you have created a new ubuntu 18.04.1, you can run this bash file to download
 - //press Ctrl + O, then Enter to save file, then Ctrl X to exit
 - sh setup.sh  //run file setup to set up things
 
+2. If you want to test whether docker-compose has worked or not, follow these steps:
+- mkdir hello-world   //create a directory for helloworld
+- cd hello-world
+- touch docker-compose.yml
+- //paste content of file docker-compose.yml that you can download here
+- sudo docker-compose up   //run hello world with dockercompose
+
+3. to be continued
