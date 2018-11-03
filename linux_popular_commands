@@ -1,0 +1,45 @@
+-------------- Docker cli
+docker network create --driver bridge incident_playground
+
+~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux
+docker ds
+docker run -d -p 5000:5000 --name registry registry:2
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Meomi1987#' -p 1433:1433 -d microsoft/mssql-server-linux:latest	#run sql on docker
+docker build -t ledangvu/ledangvu_hello_docker:1.0
+docker run -d -p 5000:80 ledangvu/ledangvu_hello_docker:1.0
+docker tag hello-world localhost:5000/hello-world:1.0
+docker push ledangvu/ledangvu_hello_docker:1.0
+
+docker run --name mycas -d cassandra:3.11.1		#run cassandra
+docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
+docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
+
+docker build -t incidentsvc .
+docker run -it --rm -p 5000:80 --name istest incidentsvc
+docker exec -it 79 bash
+
+--docker compose
+docker-compose -f docker-compose.yml -f docker-compose.docker-compose.override.yml build -d
+docker-compose build
+docker-compose up  --Builds, (re)creates, starts, and attaches to containers for a service.
+docker-compose start 
+-------------- Code First & Sql
+dotnet ef database update
+dotnet ef database drop
+dotnet ef migrations add
+
+-------------- git
+git clone -b <branch> --single-branch <url>
+git commit -m "Commit message"
+git push origin master  	// or <branch_name>
+
+git checkout -b feature_x   //create a new branch named "feature_x" and switch to it using
+git checkout master 		//switch back to master
+git branch -d feature_x		//delete branch
+git pull					//update repository
+git merge <branch>			//merge to active branch
+git diff <source_branch> <target_branch>	//review merging changes
+git status 					//see status all changes
+git add abc/abc.cs
+git add *
+git reset --hard origin/<branch_name> 	//delete commited in local
