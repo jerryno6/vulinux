@@ -35,6 +35,7 @@ git push origin master  	// or <branch_name>
 
 git checkout -b feature_x   //create a new branch named "feature_x" and switch to it using
 git checkout master 		//switch back to master
+git checkout abc.txt 		//revert file abc.txt
 git branch -d feature_x		//delete branch
 git pull					//update repository
 git merge <branch>			//merge to active branch
@@ -43,3 +44,4 @@ git status 					//see status all changes
 git add abc/abc.cs
 git add *
 git reset --hard origin/<branch_name> 	//delete commited in local
+git apply abc.diff //apply patch
