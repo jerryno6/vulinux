@@ -19,5 +19,8 @@ sudo usermod -aG cassandra cassandra
 sudo chown root:cassandra -R /usr/local/cassandra/
 sudo chmod g+w -R /usr/local/cassandra/
 
-su - cassandra
-/usr/local/cassandra/bin/cassandra -f
+#test cassandra
+#su - cassandra
+#/usr/local/cassandra/bin/cassandra -f
+#/usr/local/cassandra/bin/cqlsh localhost
+#select cluster_name, listen_address from system.local;
