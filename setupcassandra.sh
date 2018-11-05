@@ -1,23 +1,23 @@
+#https://www.rosehosting.com/blog/how-to-install-apache-cassandra-on-ubuntu-16-04/
 #update
 sudo apt update && apt upgrade -y
 
 #install dependencies
-sudo apt install openjdk-8-jdk -y
-sudo apt install python -y
+sudo apt-get install default-jdk -y
 
-#download cassandra
-wget http://apache.claz.org/cassandra/3.11.3/apache-cassandra-3.11.3-bin.tar.gz
+curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-key A278B781FE4B2BDA
 
-#untar it, and move to a better home
-sudo tar -xzvf apache-cassandra-3.11.3-bin.tar.gz
-sudo mv apache-cassandra-3.11.3 /usr/local/cassandra
+sudo apt-get update
+sudo apt-get install cassandra
 
-#create cassandra user
-sudo useradd cassandra
-sudo groupadd cassandra
-sudo usermod -aG cassandra cassandra
-sudo chown root:cassandra -R /usr/local/cassandra/
-sudo chmod g+w -R /usr/local/cassandra/
+#start, stop  cassandra
+#sudo systemctl start cassandra.service
+#sudo systemctl stop cassandra.service
+
+
+#start as service
+#sudo systemctl enable cassandra.service
 
 #test cassandra
 #su - cassandra
