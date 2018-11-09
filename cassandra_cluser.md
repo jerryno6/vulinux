@@ -16,5 +16,10 @@
 -e CASSANDRA_SEEDS=172.16.10.250 \
 cassandra:3.11`
 
+**Step 3**
+
+we can check the result by using this command in 1st machine
+`docker exec -ti some-cassandra nodetool status`
+
 References:
 [http://gokhanatil.com/2018/02/build-a-cassandra-cluster-on-docker.html](http://gokhanatil.com/2018/02/build-a-cassandra-cluster-on-docker.html)
