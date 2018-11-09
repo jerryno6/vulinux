@@ -6,3 +6,7 @@ https://github.com/jerryno6/vulinux/blob/master/setup.sh
 
 - Common commands on linux
 https://github.com/jerryno6/vulinux/blob/master/linux_popular_commands
+
+
+- Setup cassandra & deploy cassandra nodes using GossipingPropertyFileSnitch across Virtual machines
+https://github.com/jerryno6/vulinux/blob/master/cassandra_cluser.md
