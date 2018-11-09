@@ -18,7 +18,8 @@ cassandra:3.11`
 
 **Step 3**
 
-we can check the result by using this command in 1st machine
+we can check the result by using this command in 1st machine 
+
 `docker exec -ti some-cassandra nodetool status`
 
 References:
