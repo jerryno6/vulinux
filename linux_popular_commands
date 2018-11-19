@@ -1,3 +1,9 @@
+-------------- dotnet core command line
++ cd to folder of api Project run 2 command line
+cd Projects/MyProject/Company.Helloworld
+dotnet publish -c Release
+dotnet run
+
 -------------- Docker cli
 docker network create --driver bridge incident_playground
 
@@ -10,19 +16,16 @@ docker run -d -p 5000:80 ledangvu/ledangvu_hello_docker:1.0
 docker tag hello-world localhost:5000/hello-world:1.0
 docker push ledangvu/ledangvu_hello_docker:1.0
 
-docker run --name mycas -d cassandra:3.11.1		#run cassandra
-docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
-docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
-
-docker build -t incidentsvc .
-docker run -it --rm -p 5000:80 --name istest incidentsvc
+docker build -t MyProject .
+docker run -it --rm -p 5000:80 --name myprojectTest MyProject
 docker exec -it 79 bash
 
---docker compose
+-------------- docker compose
 docker-compose -f docker-compose.yml -f docker-compose.docker-compose.override.yml build -d
 docker-compose build
 docker-compose up  --Builds, (re)creates, starts, and attaches to containers for a service.
 docker-compose start 
+
 -------------- Code First & Sql
 dotnet ef database update
 dotnet ef database drop
@@ -35,7 +38,7 @@ git push origin master  	// or <branch_name>
 
 git checkout -b feature_x   //create a new branch named "feature_x" and switch to it using
 git checkout master 		//switch back to master
-git checkout abc.txt 		//revert file abc.txt
+git checkout abc.txt    //revert file abc.txt
 git branch -d feature_x		//delete branch
 git pull					//update repository
 git merge <branch>			//merge to active branch
@@ -44,4 +47,40 @@ git status 					//see status all changes
 git add abc/abc.cs
 git add *
 git reset --hard origin/<branch_name> 	//delete commited in local
-git apply abc.diff //apply patch
+git apply abc.diff  //apply a patch to current source
+git diff --cached > mypatch.patch     //stage everything & create patch
+
+-------- linux command line
+chmod a+x runmsv.sh   //allow running bash file
+sh runmsv.sh          //run bash file
+ssh -p 22 -l vule 172.16.10.252   //remote the pc
+ssh vule@172.16.10.252            //remote pc
+sudo nano /etc/ssh/sshd_config    //edit ssh
+sudo poweroff | reboot         
+sudo service docker start
+touch readme.txt    //create file readme.txt
+vim readme.txt      //edit file with vim
+nano readme.txt     //edit file with nano
+less readme.txt     //view file 
+hostname -I         //show IPs of machine
+df -h               //check for free space of disk
+sudo usermod -aG docker your-user    //add current user to docker group, so that dont need sudo each time
+#script to install ssh
+sudo apt-get -y install openssh-server
+sudo service ssh status
+hostname -I         //find out the ip of that server to connect
+ssh vule@192.168.1.249            //remote to that pc
+
+-------------- Database
+docker exec -it 7ff12daaaeb3c71b4c7e2f6186cd25b1b1f43162e5ded7c5e92d265c8f4a8139 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Str0ngPassw0rd#
+
+docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
+docker run --name cas -p 9043:9042 -d cassandra:3.11
+
+docker run --name some-cassandra -d cassandra:3.11.3		#run cassandra
+docker exec -ti cas0 cqlsh  #run cqlsh on the docker to query data
+use keyspace_name;    #must have the semi colon or the command won't be run
+
+docker run --name mycas -d cassandra:3.11.1		#run cassandra
+docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
+docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
