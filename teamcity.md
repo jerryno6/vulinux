@@ -1,9 +1,9 @@
 1. Run a server
-```docker run -it --name teamcity-server-instance  \
+`docker run -it --name teamcity-server-instance  \
     -v /Users/vule/ProjectTests/TeamCity/Server/datadir:/data/teamcity_server/datadir \
     -v /Users/vule/ProjectTests/TeamCity/Server/logs:/opt/teamcity/logs  \
     -p 8111:8111 \
-    jetbrains/teamcity-server```
+    jetbrains/teamcity-server`
 
 2. While running the container, it will require us to config the server by going to the link it provides.
 You will see a line like this:
