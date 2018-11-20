@@ -8,7 +8,8 @@ dotnet run
 docker network create --driver bridge incident_playground
 
 ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux
-docker ds
+docker ps
+docker run -d --name some_name abc.com/cassandra:3.11
 docker run -d -p 5000:5000 --name registry registry:2
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Meomi1987#' -p 1433:1433 -d microsoft/mssql-server-linux:latest	#run sql on docker
 docker build -t ledangvu/ledangvu_hello_docker:1.0
