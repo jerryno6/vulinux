@@ -17,11 +17,11 @@ You will see a line like this:
 - Create Administrator Account (for example: username=root, pw=password)
 - Update the information for admin account (name=admin, email=someemail@mail.com & other configs)
 
-## things should be done if you see these lines:
+## Things should be done if you see these lines:
 
-`TeamCity initialized, server UUID: e97a4108-34db-4304-a54d-ae28690342d2, URL: http://localhost
-TeamCity is running in professional mode
-[TeamCity] Super user authentication token: 1333673163881963353 (use empty username with the token as the password to access the server)`
+^TeamCity initialized, server UUID: e97a4108-34db-4304-a54d-ae28690342d2, URL: http://localhost
+^TeamCity is running in professional mode
+^[TeamCity] Super user authentication token: 1333673163881963353 (use empty username with the token as the password to access ^the server)
 
 From now, we can login your teamcity at http://localhost:8111 by using *administrator account* or the *empty-username & 1333673163881963353 as password*
 
