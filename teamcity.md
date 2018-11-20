@@ -25,16 +25,20 @@ From now, we can login your teamcity at http://localhost:8111 by using *administ
 
 3. Run a teamcity agent connected to server to build projects
 we can replace SERVER_URL=http://localhost:8111 by IP of the machine for example: SERVER_URL=http://192.168.1.15:8111 
-```docker run -it --name teamcity-agent-instance \
+```
+docker run -it --name teamcity-agent-instance \
     -e SERVER_URL=http://localhost:8111 \ 
     -v /Users/vule/ProjectTests/TeamCity/Agent/conf:/data/teamcity_agent/conf  \      
-    jetbrains/teamcity-agent```
+    jetbrains/teamcity-agent
+```
 
 4. We need to authorize the agent in TeamcityServer
 - run bash on the TeamcityAgentDocker, and open file /data/teamcity_agent/conf/buildAgent.properties to see the *authorizationToken* (type :q to exit the viewer)
 
-```docker exec -it teamcity-agent-instance bash
-less /data/teamcity_agent/conf/buildAgent.properties```
+```
+docker exec -it teamcity-agent-instance bash
+less /data/teamcity_agent/conf/buildAgent.properties
+```
 - Copy the value of *authorizationToken* (for example authorizationToken=4fcf1c123d4fe6383a9e97db1fb888d7)
 - Go to teamcity server, on top left menu, Click *Agents*, There should be an Unauthorized agent, click on it, click authorize, paste the token an authorize it
 
