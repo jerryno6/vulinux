@@ -44,19 +44,11 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 #INSTALL DOTNET CORE
-#install libicu 55
-#if you are running ubuntu 18.04.1, you need to install libicu55
-sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
-sudo apt-get update
-sudo apt-get install libicu55
-
-#install dotnet sdk
-wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
-
-sudo apt-get install apt-transport-https
+sudo add-apt-repository universe
+sudo apt-get install apt-transport-https -y
 sudo apt-get update
-sudo apt-get -y install dotnet-sdk-2.1
+sudo apt-get install dotnet-sdk-2.1 -y
 
 #install azure cli
 AZ_REPO=$(lsb_release -cs)
