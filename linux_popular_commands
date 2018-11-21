@@ -21,6 +21,12 @@ docker build -t MyProject .
 docker run -it --rm -p 5000:80 --name myprojectTest MyProject
 docker exec -it 79 bash
 
+//copy file between docker & host
+docker cp foo.txt mycontainer:/foo.txt  
+docker cp mycontainer:/foo.txt foo.txt  
+docker cp src/. mycontainer:/target
+docker cp mycontainer:/src/. target
+
 -------------- docker compose
 docker-compose -f docker-compose.yml -f docker-compose.docker-compose.override.yml build -d
 docker-compose build
@@ -64,7 +70,7 @@ vim readme.txt      //edit file with vim
 nano readme.txt     //edit file with nano
 less readme.txt     //view file 
 hostname -I         //show IPs of machine
-df -h               //check for free space of disk
+df -h --total       //check for free space of disk
 sudo usermod -aG docker your-user    //add current user to docker group, so that dont need sudo each time
 #script to install ssh
 sudo apt-get -y install openssh-server
