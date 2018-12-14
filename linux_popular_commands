@@ -5,23 +5,24 @@ dotnet publish -c Release
 dotnet run
 
 -------------- Docker cli
+docker login -u <user> -p <pwd> odacitest.azurecr.io
 docker network create --driver bridge incident_playground
 
 ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux
 docker ps
 docker run -d --name some_name abc.com/cassandra:3.11
 docker run -d -p 5000:5000 --name registry registry:2
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Meomi1987#' -p 1433:1433 -d microsoft/mssql-server-linux:latest	#run sql on docker
 docker build -t ledangvu/ledangvu_hello_docker:1.0
 docker run -d -p 5000:80 ledangvu/ledangvu_hello_docker:1.0
 docker tag hello-world localhost:5000/hello-world:1.0
 docker push ledangvu/ledangvu_hello_docker:1.0
 
+docker inspect containerid  //see the port that docker using
 docker build -t MyProject .
 docker run -it --rm -p 5000:80 --name myprojectTest MyProject
 docker exec -it 79 bash
 
-//copy file between docker & host
+//copy file or folder between docker & host
 docker cp foo.txt mycontainer:/foo.txt  
 docker cp mycontainer:/foo.txt foo.txt  
 docker cp src/. mycontainer:/target
@@ -48,6 +49,9 @@ git checkout master 		//switch back to master
 git checkout abc.txt    //revert file abc.txt
 git branch -d feature_x		//delete branch
 git pull					//update repository
+git log
+git log --stat
+git log --pretty=oneline
 git merge <branch>			//merge to active branch
 git diff <source_branch> <target_branch>	//review merging changes
 git status 					//see status all changes
@@ -78,9 +82,7 @@ sudo service ssh status
 hostname -I         //find out the ip of that server to connect
 ssh vule@192.168.1.249            //remote to that pc
 
--------------- Database
-docker exec -it 7ff12daaaeb3c71b4c7e2f6186cd25b1b1f43162e5ded7c5e92d265c8f4a8139 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Str0ngPassw0rd#
-
+-------------- Database cassandra
 docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
 docker run --name cas -p 9043:9042 -d cassandra:3.11
 
@@ -91,3 +93,15 @@ use keyspace_name;    #must have the semi colon or the command won't be run
 docker run --name mycas -d cassandra:3.11.1		#run cassandra
 docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
 docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
+
+-------------- Database SQLServer docker
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
+docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
+docker cp "/Users/vule/Downloads/dbscript/script.sql" mssql_tools:/script.sql     #copy the .sql file from host to container
+docker exec mssql_tools sh -c  "/opt/mssql-tools/bin/sqlcmd -S 172.16.10.250 -U SA -P P@ssword -i script.sql"    #run .SQL file in container using sql-tool, you should change the IP of the sql instance
+docker rm -f mssql_tools    #remove sqltool
+docker exec -it 17a /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssword #start sql chmod
+    1> SELECT SYSDATETIMEOFFSET();
+    2> GO
+
+# from now, we can use MS SQLManagement or SQL Operations Studio  to connect to the Sql instance running on container
