@@ -1,8 +1,9 @@
 Import-Module WebAdministration
+
+$allSitesBindings = ""
+$outputFile = "IIS_sites_And_BindingsPorts.txt"
 $Websites = Get-ChildItem IIS:\Sites
 
-$outputFile = "IIS_sites_And_BindingsPorts.txt"
-$allSitesBindings = ""
 foreach ($Site in $Websites) {
 
     $Binding = $Site.bindings
@@ -13,13 +14,10 @@ foreach ($Site in $Websites) {
 	$siteBinding = "Site: " + $Site.name + " - IP:" + $IP + ", Port:" + $Port
 	$allSitesBindings += "`n" + $siteBinding
 }
+#write to file
 Write-Output $allSitesBindings > $outputFile
-Write-Host $allSitesBindings
+
+#notify to user
+Write-Host $allSitesBindings 
+Write-Host "`nBindings also write to file " $outputFile 
 Write-Host "--------Finished--------"
-
-
-
-
-
-
-
