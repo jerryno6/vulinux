@@ -1,4 +1,8 @@
-#How to enable IIS, asp.net & WCF on windows
+# How to list sites and its binding ports on IIS
+run this powershell file: list_iis_ports.ps1
+
+
+# How to enable IIS, asp.net & WCF on windows
 
 https://stackoverflow.com/questions/4932722/iis-7-not-recognizing-svc-file
 
