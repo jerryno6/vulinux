@@ -14,7 +14,7 @@ foreach ($Site in $Websites) {
 	$allSitesBindings += "`n" + $siteBinding
 }
 Write-Output $allSitesBindings > $outputFile
-#Write-Host $allSitesBindings
+Write-Host $allSitesBindings
 Write-Host "--------Finished--------"
 
 
