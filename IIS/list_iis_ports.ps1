@@ -3,6 +3,7 @@ Import-Module WebAdministration
 $allSitesBindings = ""
 $outputFile = "IIS_sites_And_BindingsPorts.txt"
 $Websites = Get-ChildItem IIS:\Sites
+$count = 0
 
 foreach ($Site in $Websites) {
 
@@ -11,9 +12,11 @@ foreach ($Site in $Websites) {
     [string]$IP = $BindingInfo.SubString($BindingInfo.IndexOf(" "),$BindingInfo.IndexOf(":")-$BindingInfo.IndexOf(" "))         
     [string]$Port = $BindingInfo.SubString($BindingInfo.IndexOf(":")+1,$BindingInfo.LastIndexOf(":")-$BindingInfo.IndexOf(":")-1) 
 
-	$siteBinding = "Site: " + $Site.name + " - IP:" + $IP + ", Port:" + $Port
+	$count += 1
+	$siteBinding = "" + $count + ": " + $Site.name + " - IP:" + $IP + ", Port:" + $Port
 	$allSitesBindings += "`n" + $siteBinding
 }
+
 #write to file
 Write-Output $allSitesBindings > $outputFile
 
