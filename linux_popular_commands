@@ -105,3 +105,22 @@ docker exec -it 17a /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssword #
     2> GO
 
 # from now, we can use MS SQLManagement or SQL Operations Studio  to connect to the Sql instance running on container
+
+SQL Server cli
+SqlCmd -E -S MyServerMyInstance –Q “BACKUP DATABASE [MyDB] TO DISK=’D:BackupsMyDB.bak'”
+SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB.bak'”
+
+-------------- windows Server 
+sc.exe create "MyFirstWindowsService" binPath="C:\app\MyFirstWindowsService.exe" start=Auto type=system      --install windows service
+sc.exe delete "MyFirstWindowsService"      --delete a windows service
+
+netstat -a -n -p tcp -o     --list all listening ports & app
+
+-------------- Nuget Restore package
+nuget restore -PackagesDirectory .
+
+-------------- OSX
+/private/etc/hosts      -- path to hosts file on OSX
+
+-------------- Powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
