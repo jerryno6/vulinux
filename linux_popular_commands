@@ -46,12 +46,14 @@ git push origin master  	// or <branch_name>
 
 git checkout -b feature_x   //create a new branch named "feature_x" and switch to it using
 git checkout master 		//switch back to master
-git checkout abc.txt    //revert file abc.txt
+git checkout abc.txt        //revert file abc.txt
 git branch -d feature_x		//delete branch
 git pull					//update repository
 git log
 git log --stat
 git log --pretty=oneline
+git stash save 'Some changes'   //stash current changes
+git stash pop                   //pop a stash, and apply it to current branch
 git merge <branch>			//merge to active branch
 git diff <source_branch> <target_branch>	//review merging changes
 git status 					//see status all changes
