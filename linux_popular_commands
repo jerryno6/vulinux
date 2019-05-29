@@ -67,7 +67,7 @@ git diff --cached > mypatch.patch     //stage everything & create patch
 -------- linux command line
 chmod a+x runmsv.sh   //allow running bash file
 sh runmsv.sh          //run bash file
-ssh -p 22 -l vule 172.16.10.252   //remote the pc
+ssh -p 22 -l vule 172.16.10.252   //remote the pc If it says couldn’t connect on port XXX
 ssh vule@172.16.10.252            //remote pc
 sudo nano /etc/ssh/sshd_config    //edit ssh
 sudo poweroff | reboot         
