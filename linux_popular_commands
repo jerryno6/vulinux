@@ -48,7 +48,7 @@ git checkout -b feature_x   //create a new branch named "feature_x" and switch t
 git checkout master 		//switch back to master
 git checkout abc.txt        //revert file abc.txt
 git checkout .              //discard all changes
-`git branch -a`             //list all branches
+git branch -a               //list all branches
 git branch -d feature_x		//delete branch
 git pull					//update repository
 git log
