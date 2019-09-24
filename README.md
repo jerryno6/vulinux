@@ -1,5 +1,5 @@
 # vulinux
-a repository which store What I've done about linux installation & Docker & other stuff.
+a repository which store What I've done about linux installation & Docker & other CLIs.
 - How to setup docker, compose, dotnet on fresh Ubuntu 18.04.1 created by Azure Portal (tested 2018)
 https://github.com/jerryno6/vulinux/blob/master/setup_ubuntu_18.04.1
 https://github.com/jerryno6/vulinux/blob/master/setup.sh

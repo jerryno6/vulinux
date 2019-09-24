@@ -4,7 +4,7 @@ cd Projects/MyProject/Company.Helloworld
 dotnet publish -c Release
 dotnet run
 
--------------- Docker cli
+--------------  cli
 docker login -u <user> -p <pwd> odacitest.azurecr.io
 docker network create --driver bridge incident_playground
 
@@ -28,6 +28,13 @@ docker cp mycontainer:/foo.txt foo.txt
 docker cp src/. mycontainer:/target
 docker cp mycontainer:/src/. target
 
+docker rm MY_CONTAINER  #remove container
+docker rmi IMAGE_NAME   #remove image
+docker stats            #status of containers %cpu, %mem usage..
+docker inspect MY_CONTAINER #get details of container
+docker logs MY_CONTAINER    #view log
+docker inspect CONTAINER_ID | grep "IPAddress" #display container IP
+
 -------------- docker compose
 docker-compose -f docker-compose.yml -f docker-compose.docker-compose.override.yml build -d
 docker-compose build
@@ -48,6 +55,7 @@ git checkout -b feature_x   //create a new branch named "feature_x" and switch t
 git checkout master 		//switch back to master
 git checkout abc.txt        //revert file abc.txt
 git checkout .              //discard all changes
+git branch -a               //list all branches
 git branch -d feature_x		//delete branch
 git pull					//update repository
 git log
@@ -87,9 +95,10 @@ ssh vule@192.168.1.249            //remote to that pc
 
 -------------- Database cassandra
 docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
-docker run --name cas -p 9043:9042 -d cassandra:3.11
+docker run --name cas -p 9042-9043:9042-9043 -d cassandra:3.11
 
-docker run --name some-cassandra -d cassandra:3.11.3		#run cassandra
+docker run --name some-cassandra -d cassandra:3.11.4		#run cassandra
+docker run --name some-cassandra -d cassandra:latest		#run cassandra using latest version
 docker exec -ti cas0 cqlsh  #run cqlsh on the docker to query data
 use keyspace_name;    #must have the semi colon or the command won't be run
 
@@ -115,11 +124,13 @@ SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB
 
 -------------- windows Server 
 sc.exe create "MyFirstWindowsService" binPath="C:\app\MyFirstWindowsService.exe" start=Auto type=system      --install windows service
-sc.exe delete "MyFirstWindowsService"      --delete a windows service
+sc.exe  "MyFirstWindowsService"      --delete a windows service
 
 netstat -a -n -p tcp -o     --list all listening ports & app
 
 -------------- Nuget Restore package
+nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
+nuget sources remove -Name abcSource
 nuget restore -PackagesDirectory .
 
 -------------- OSX
