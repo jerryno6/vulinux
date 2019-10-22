@@ -4,9 +4,12 @@ cd Projects/MyProject/Company.Helloworld
 dotnet publish -c Release
 dotnet run
 
---------------  cli
+--------------docker cli
 docker login -u <user> -p <pwd> odacitest.azurecr.io
-docker network create --driver bridge incident_playground
+docker network create --driver bridge my_network_playground
+docker network rm my_network_playground
+docker network connect my_network_playground container1    #connect a running container to network
+docker network disconnect my_network_playground container1
 
 ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux
 docker ps
@@ -72,6 +75,7 @@ git diff <source_branch> <target_branch>	//review merging changes
 git status 					//see status all changes
 git add abc/abc.cs
 git add *
+git reset --remove all staged
 git reset --hard origin/<branch_name> 	//delete commited in local
 git apply abc.diff  //apply a patch to current source
 git diff --cached > mypatch.patch     //stage everything & create patch
