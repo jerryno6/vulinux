@@ -48,15 +48,19 @@ docker-compose build
 docker-compose up  --Builds, (re)creates, starts, and attaches to containers for a service.
 docker-compose start 
 
--------------- Code First & Sql
+-------------- Entity Framework & Sql
+dotnet ef migration list
 dotnet ef database update
+dotnet ef database update 20191018114616_SetDataCompressionOnEverything
 dotnet ef database drop
 dotnet ef migrations add
-
 -------------- git
+git help [fetch|pull|commit...]
+git config --global core.excludesfile ~/.gitignore_global   //config for ignoring files globally
 git clone -b <branch> --single-branch <url>
 git commit -m "Commit message"
-git push origin master  	// or <branch_name>
+git merge develop       //merge develop branch to current branch
+git push origin HEAD  	// or <branch_name>
 
 git checkout -b feature_x   //create a new branch named "feature_x" and switch to it using
 git checkout master 		//switch back to master
@@ -67,10 +71,14 @@ git branch -d feature_x		//delete branch
 git pull					//update repository
 git log
 git log --stat
-git log --pretty=oneline
-git stash save 'Some changes'   //stash current changes
+git log [-5] --oneline      //show the last 5 logs 
+git stash list|show|clear
+git stash save -u 'Some changes'   //stash current changes -u=include UNTRACKED files
 git stash pop                   //pop a stash, and apply it to current branch
-git merge <branch>			//merge to active branch
+git stash drop
+git diff > mypatch.patch        //export diff to .patch file
+git apply mypatch.patch         //apply patch file to current branch
+git merge <branch>			//merge <branch> to active branch
 git diff <source_branch> <target_branch>	//review merging changes
 git status 					//see status all changes
 git add abc/abc.cs
