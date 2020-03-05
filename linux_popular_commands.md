@@ -1,3 +1,6 @@
+userename,password for login https://artifactory.devops.onsolve.com/
+vu.le@onsolve.com/AKCp5e3VEyGMStB5zVcTiDcj5CPEi8LmW54qLE6UJc2BikkkRSnYGCpSpQoGaXhEPoyEyFtdS
+
 -------------- dotnet core command line
 + cd to folder of api Project run 2 command line
 cd Projects/MyProject/Company.Helloworld
@@ -23,7 +26,7 @@ docker tag hello-world localhost:5000/hello-world:1.0
 docker push ledangvu/ledangvu_hello_docker:1.0
 
 docker inspect containerid  //see the port that docker using
-docker build -t MyProject .
+docker build -t my_project .
 docker run -it --rm -p 5000:80 --name myprojectTest MyProject
 docker exec -it 79 bash
 
@@ -39,14 +42,19 @@ docker rm MY_CONTAINER  #remove container
 docker rmi IMAGE_NAME   #remove image
 docker stats            #status of containers: ID|name|%cpu|%mem usage|NetIO|PIDS
 docker inspect MY_CONTAINER #get details of container
-docker logs MY_CONTAINER    #view log
+docker logs -f MY_CONTAINER    #view log of containers & follow up until we stop it by Ctrl + C
 docker inspect CONTAINER_ID | grep "IPAddress" #display container IP
+
+docker volume ls        #list all volumes
+docker volume prune     #delete not used volumes
+docker system prune     #remove unused/dangling images, containers, volumes, networks
 
 -------------- docker compose
 docker-compose -f docker-compose.yml -f docker-compose.docker-compose.override.yml build -d
 docker-compose build
 docker-compose up  --Builds, (re)creates, starts, and attaches to containers for a service.
 docker-compose start 
+docker-compose logs -f SERVICE_NAME     #view log container
 
 -------------- Entity Framework & Sql
 dotnet ef migration list
@@ -66,9 +74,11 @@ git checkout -b feature_x   //create a new branch named "feature_x" and switch t
 git checkout master 		//switch back to master
 git checkout abc.txt        //revert file abc.txt
 git checkout .              //discard all changes
-git branch -a               //list all branches
+git branch -a               //-a : list all branches or local branches only
+git branch -a               //list remote branches only
 git branch -d feature_x		//delete branch
 git pull					//update repository
+git pull origin develop     //pull from develop branch and merge to current branch (you are not standing at develop)
 git log
 git log --stat
 git log [-5] --oneline      //show the last 5 logs 
@@ -77,6 +87,7 @@ git stash save -u 'Some changes'   //stash current changes -u=include UNTRACKED 
 git stash pop                   //pop a stash, and apply it to current branch
 git stash drop
 git diff > mypatch.patch        //export diff to .patch file
+git diff --staged               //show differences of staged items
 git apply mypatch.patch         //apply patch file to current branch
 git merge <branch>			//merge <branch> to active branch
 git diff <source_branch> <target_branch>	//review merging changes
@@ -87,6 +98,10 @@ git reset --remove all staged
 git reset --hard origin/<branch_name> 	//delete commited in local
 git apply abc.diff  //apply a patch to current source
 git diff --cached > mypatch.patch     //stage everything & create patch
+
+git config --get remote.origin.url      //get the remote url of repository
+git remote -v                           //display the fetch & push url of repository
+git remote show origin                  //show all branches & url of repository & behind/uptodate status
 
 -------- linux command line
 chmod a+x runmsv.sh   //allow running bash file
@@ -116,7 +131,9 @@ docker run --name cas -p 9042-9043:9042-9043 -d cassandra:3.11.4
 docker run --name some-cassandra -d cassandra:3.11.4		#run cassandra
 docker run --name some-cassandra -d cassandra:latest		#run cassandra using latest version
 docker exec -ti cas0 cqlsh  #run cqlsh on the docker to query data
-use keyspace_name;    #must have the semi colon or the command won't be run
+desc keyspaces;             #list all keyspaces
+use keyspace_name;          #must have the semi colon or the command won't be run
+desc tables;                #list all tables
 
 docker run --name mycas -d cassandra:3.11.1		#run cassandra
 docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
@@ -151,6 +168,7 @@ nuget restore -PackagesDirectory .
 
 -------------- OSX
 /private/etc/hosts      -- path to hosts file on OSX
+du -sh *                -- list files/folder's size
 
 -------------- Powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
