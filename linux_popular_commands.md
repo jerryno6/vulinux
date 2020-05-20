@@ -106,6 +106,7 @@ git remote show origin                  //show all branches & url of repository 
 git config --global credential.helper osxkeychain --fix for wrong credential on mac
 git config --global credential.helper wincred --fix for wrong credential on windows
 git config --global --unset user.password
+
 -------- linux command line
 chmod a+x runmsv.sh   //allow running bash file
 sh runmsv.sh          //run bash file
@@ -168,8 +169,10 @@ SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB
 -------------- windows Server 
 sc.exe create "MyFirstWindowsService" binPath="C:\app\MyFirstWindowsService.exe" start=Auto type=system      --install windows service
 sc.exe  "MyFirstWindowsService"      --delete a windows service
-
 netstat -a -n -p tcp -o     --list all listening ports & app
+
+net localgroup "Remote Desktop Users" "dev" /add  #add dev user to remote desktop group
+net localgroup "Remote Desktop Users" "dev" /delete  #delete 'dev' user from remote desktop group
 
 -------------- Nuget Restore package
 nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
