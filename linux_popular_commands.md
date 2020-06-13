@@ -103,6 +103,10 @@ git config --get remote.origin.url      //get the remote url of repository
 git remote -v                           //display the fetch & push url of repository
 git remote show origin                  //show all branches & url of repository & behind/uptodate status
 
+git config --global credential.helper osxkeychain --fix for wrong credential on mac
+git config --global credential.helper wincred --fix for wrong credential on windows
+git config --global --unset user.password
+
 -------- linux command line
 chmod a+x runmsv.sh   //allow running bash file
 sh runmsv.sh          //run bash file
@@ -123,6 +127,13 @@ sudo apt-get -y install openssh-server
 sudo service ssh status
 hostname -I         //find out the ip of that server to connect
 ssh vule@192.168.1.249            //remote to that pc
+
+--windows service command line
+sc.exe create "ABC.AccountService" binPath="C:\Apps\ABC.AccountService\ABC.AccountService.exe" start=auto;
+sc.exe start "ABC.AccountService";
+sc.exe stop "ABC.AccountService";
+sc.exe QUERY "ABC.AccountService";
+sc.exe delete "ABC.AccountService";
 
 -------------- Database cassandra
 docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
@@ -158,8 +169,10 @@ SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB
 -------------- windows Server 
 sc.exe create "MyFirstWindowsService" binPath="C:\app\MyFirstWindowsService.exe" start=Auto type=system      --install windows service
 sc.exe  "MyFirstWindowsService"      --delete a windows service
-
 netstat -a -n -p tcp -o     --list all listening ports & app
+
+net localgroup "Remote Desktop Users" "dev" /add  #add dev user to remote desktop group
+net localgroup "Remote Desktop Users" "dev" /delete  #delete 'dev' user from remote desktop group
 
 -------------- Nuget Restore package
 nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
