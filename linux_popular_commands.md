@@ -70,13 +70,15 @@ git commit -m "Commit message"
 git merge develop       //merge develop branch to current branch
 git push origin HEAD  	// or <branch_name>
 
+git fetch origin --prune    //clean stale branches & fetch new from origin
+
 git checkout -b feature_x   //create a new branch named "feature_x" and switch to it using
 git checkout master 		//switch back to master
 git checkout abc.txt        //revert file abc.txt
 git checkout .              //discard all changes
-git branch -a               //-a : list all branches or local branches only
-git branch -a               //list remote branches only
-git branch -d feature_x		//delete branch
+git branch                  //-a : list all branches or local branches only
+git branch -a               //list all branches including remote branch
+git branch -d feature_x		//git delete branch
 git pull					//update repository
 git pull origin develop     //pull from develop branch and merge to current branch (you are not standing at develop)
 git log
@@ -91,6 +93,7 @@ git diff --staged               //show differences of staged items
 git apply mypatch.patch         //apply patch file to current branch
 git merge <branch>			//merge <branch> to active branch
 git diff <source_branch> <target_branch>	//review merging changes
+git diff HEAD path_to_file     //compare diff between current file and HEAD
 git status 					//see status all changes
 git add abc/abc.cs
 git add *
@@ -102,6 +105,9 @@ git diff --cached > mypatch.patch     //stage everything & create patch
 git config --get remote.origin.url      //get the remote url of repository
 git remote -v                           //display the fetch & push url of repository
 git remote show origin                  //show all branches & url of repository & behind/uptodate status
+git remote add origin https://github.com/user/repo.git //add a remote
+git remote rm                           //remove a remote
+git push -u ldv --all                    //push all to new remote branch
 
 git config --global credential.helper osxkeychain --fix for wrong credential on mac
 git config --global credential.helper wincred --fix for wrong credential on windows
