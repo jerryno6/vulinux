@@ -184,6 +184,7 @@ net localgroup "Remote Desktop Users" "dev" /delete  #delete 'dev' user from rem
 nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
 nuget sources remove -Name abcSource
 nuget restore -PackagesDirectory .
+./nuget.exe push -source "PartsUnlimitedShared" -ApiKey VSTS "C:\PartsUnlimited.Shared.1.0.0.nupkg"
 
 -------------- OSX
 /private/etc/hosts      -- path to hosts file on OSX
