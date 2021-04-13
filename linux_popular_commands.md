@@ -1,11 +1,3 @@
-userename,password for login https://artifactory.devops.onsolve.com/
-vu.le@onsolve.com/AKCp5e3VEyGMStB5zVcTiDcj5CPEi8LmW54qLE6UJc2BikkkRSnYGCpSpQoGaXhEPoyEyFtdS
-
--------------- dotnet core command line
-+ cd to folder of api Project run 2 command line
-cd Projects/MyProject/Company.Helloworld
-dotnet publish -c Release
-dotnet run
 
 --------------docker cli
 docker login -u <user> -p <pwd> odacitest.azurecr.io
@@ -56,12 +48,19 @@ docker-compose up  --Builds, (re)creates, starts, and attaches to containers for
 docker-compose start 
 docker-compose logs -f SERVICE_NAME     #view log container
 
+-------------- dotnet core command line
++ cd to folder of api Project run 2 command line
+cd Projects/MyProject/Company.Helloworld
+dotnet publish -c Release
+dotnet run
+
 -------------- Entity Framework & Sql
 dotnet ef migration list
 dotnet ef database update
 dotnet ef database update 20191018114616_SetDataCompressionOnEverything
 dotnet ef database drop
 dotnet ef migrations add
+
 -------------- git
 git help [fetch|pull|commit...]
 git config --global core.excludesfile ~/.gitignore_global   //config for ignoring files globally
@@ -133,6 +132,7 @@ sudo apt-get -y install openssh-server
 sudo service ssh status
 hostname -I         //find out the ip of that server to connect
 ssh vule@192.168.1.249            //remote to that pc
+
 
 --windows service command line
 sc.exe create "ABC.AccountService" binPath="C:\Apps\ABC.AccountService\ABC.AccountService.exe" start=auto;
