@@ -166,8 +166,7 @@ docker exec -it 17a /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssword #
     1> SELECT SYSDATETIMEOFFSET();
     2> GO
 
-# from now, we can use MS SQLManagement or SQL Operations Studio  to connect to the Sql instance running on container
-
+# from now on, we can use MS SQLManagement or Azure Data Studio  to connect to the Sql instance running on container
 SQL Server cli
 SqlCmd -E -S MyServerMyInstance –Q “BACKUP DATABASE [MyDB] TO DISK=’D:BackupsMyDB.bak'”
 SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB.bak'”
