@@ -101,6 +101,15 @@ git reset --hard origin/<branch_name> 	//delete commited in local
 git apply abc.diff  //apply a patch to current source
 git diff --cached > mypatch.patch     //stage everything & create patch
 
+git rebase -i HEAD~4                //update history of git upto 4 commits
+use :wq to write changes
+git push --force                    //to update history
+
+git rm -r --cached .                //remove everything from the repository to fix .gitignore
+git add .                           //add only files you need to track
+git commit -m '.gitignore fix'      //commit to update
+git push                            //push to server to store code
+
 git config --get remote.origin.url      //get the remote url of repository
 git remote -v                           //display the fetch & push url of repository
 git remote show origin                  //show all branches & url of repository & behind/uptodate status
