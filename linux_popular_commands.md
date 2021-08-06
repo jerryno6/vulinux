@@ -78,6 +78,7 @@ git checkout .              //discard all changes
 git branch                  //-a : list all branches or local branches only
 git branch -a               //list all branches including remote branch
 git branch -d feature_x		//git delete branch
+git branch -m <old-branch-name> <new-branch-name> //rename branch
 git pull					//update repository
 git pull origin develop     //pull from develop branch and merge to current branch (you are not standing at develop)
 git log
@@ -98,6 +99,7 @@ git add abc/abc.cs
 git add *
 git reset --remove all staged
 git reset --hard origin/<branch_name> 	//delete commited in local
+git clean -df                           //delete untracked files in local
 git apply abc.diff  //apply a patch to current source
 git diff --cached > mypatch.patch     //stage everything & create patch
 
