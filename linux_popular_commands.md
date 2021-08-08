@@ -11,7 +11,7 @@ docker ps
 
 docker run -d --name some_name --net NAME_OF_NETWORK abc.com/cassandra:3.11
 docker run -d --name some_name abc.com/cassandra:3.11
-docker run -d -p 5000:5000 --name registry registry:2
+docker run -d -p 5000:5000 --name registry registry:2   #-p host:container
 docker build -t ledangvu/ledangvu_hello_docker:1.0
 docker run -d -p 5000:80 ledangvu/ledangvu_hello_docker:1.0
 docker tag hello-world localhost:5000/hello-world:1.0
@@ -104,6 +104,7 @@ git apply abc.diff  //apply a patch to current source
 git diff --cached > mypatch.patch     //stage everything & create patch
 
 git rebase -i HEAD~4                //update history of git upto 4 commits
+press i for insert, edit file as you want
 use :wq to write changes
 git push --force                    //to update history
 
