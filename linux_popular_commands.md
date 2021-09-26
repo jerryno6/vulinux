@@ -88,6 +88,7 @@ git stash list|show|clear
 git stash save -u 'Some changes'   //stash current changes -u=include UNTRACKED files
 git stash pop                   //pop a stash, and apply it to current branch
 git stash drop
+git diff --cached --binary > mypatch.patch  //export stagged  to .patch file
 git diff > mypatch.patch        //export diff to .patch file
 git diff --staged               //show differences of staged items
 git apply mypatch.patch         //apply patch file to current branch
