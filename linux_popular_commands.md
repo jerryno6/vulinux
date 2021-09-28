@@ -83,7 +83,7 @@ git pull					//update repository
 git pull origin develop     //pull from develop branch and merge to current branch (you are not standing at develop)
 git log
 git log --stat
-git log [-5] --oneline      //show the last 5 logs 
+git log -5 --oneline      //show the last 5 logs 
 git stash list|show|clear
 git stash save -u 'Some changes'   //stash current changes -u=include UNTRACKED files
 git stash pop                   //pop a stash, and apply it to current branch
