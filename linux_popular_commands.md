@@ -47,6 +47,17 @@ docker-compose up  --Builds, (re)creates, starts, and attaches to containers for
 docker-compose start 
 docker-compose logs -f SERVICE_NAME     #view log container
 
+### Command for moving docker data to D partition
+wsl --shutdown
+wsl --export docker-desktop-data docker-desktop-data.tar
+wsl --unregister docker-desktop-data
+mkdir D:\DockerDesktop\docker-desktop-data
+wsl --import docker-desktop-data D:\DockerDesktop\docker-desktop-data D:\DockerDesktop\docker-desktop-data.tar --version 2
+
+wsl --export ubuntu ubuntu.tar
+wsl --unregister ubuntu
+mkdir D:\DockerDesktop\ubuntu
+wsl --import ubuntu D:\DockerDesktop\ubuntu D:\DockerDesktop\ubuntu.tar --version 2
 # --------------kubectl cli
 ```
 alias ku="microk8s kubectl"
