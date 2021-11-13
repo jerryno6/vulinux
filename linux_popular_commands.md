@@ -245,6 +245,7 @@ sudo apt-get -y install openssh-server
 sudo service ssh status
 hostname -I         # find out the ip of that server to connect
 ssh vule@192.168.1.249            # remote to that pc
+rm -rf dir1         #remove a directory folder wihtout being prompt
 ```
 
 # -------------- windows service command line
