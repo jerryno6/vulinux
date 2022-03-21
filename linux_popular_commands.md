@@ -87,6 +87,7 @@ git log [-5] --oneline      //show the last 5 logs
 git stash list|show|clear
 git stash save -u 'Some changes'   //stash current changes -u=include UNTRACKED files
 git stash pop                   //pop a stash, and apply it to current branch
+git stash apply                   //apply a stash, and apply it to current branch
 git stash drop
 git diff > mypatch.patch        //export diff to .patch file
 git diff --staged               //show differences of staged items
@@ -145,7 +146,6 @@ sudo service ssh status
 hostname -I         //find out the ip of that server to connect
 ssh vule@192.168.1.249            //remote to that pc
 
-
 --windows service command line
 sc.exe create "ABC.AccountService" binPath="C:\Apps\ABC.AccountService\ABC.AccountService.exe" start=auto;
 sc.exe start "ABC.AccountService";
@@ -167,6 +167,9 @@ desc tables;                #list all tables
 docker run --name mycas -d cassandra:3.11.1		#run cassandra
 docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
 docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
+
+-------------- local stack
+docker run -rm -it 4566:4566 localStack/localStack
 
 -------------- Database SQLServer docker
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
