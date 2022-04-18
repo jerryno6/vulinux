@@ -8,6 +8,8 @@ docker network disconnect my_network_playground container1
 
 ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux
 docker ps
+docker images
+docker image rm imagge_id
 
 docker run -d --name some_name --net NAME_OF_NETWORK abc.com/cassandra:3.11
 docker run -d --name some_name abc.com/cassandra:3.11
@@ -218,7 +220,10 @@ git remote show origin                  # show all branches & url of repository 
 git remote add origin https://github.com/user/repo.git # add a remote
 git remote rm                           # remove a remote
 git push -u ldv --all                    # push all to new remote branch
+git push -i origin master               #push master branch to remote origin
 
+
+git config credential.https://VuLeCL@bitbucket.org vu.le.extern@galeria.de
 git config --global credential.helper osxkeychain --fix for wrong credential on mac
 git config --global credential.helper wincred --fix for wrong credential on windows
 git config --global --unset user.password
@@ -226,6 +231,7 @@ git config --global --unset user.password
 
 # -------- linux command line
 ```
+whereis android-sdk     # find path of android-sdk folder
 chmod a+x runmsv.sh   # allow running bash file
 sh runmsv.sh          # run bash file
 ssh -p 22 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
@@ -276,7 +282,9 @@ docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server
 
 # -------------- Database SQLServer docker
 ```
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1433:1433 --name todosql -d mcr.microsoft.com/mssql/server:2019-latest  #run sql on docker
+docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
+
 docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
 docker cp "/Users/vule/Downloads/dbscript/script.sql" mssql_tools:/script.sql     #copy the .sql file from host to container
 docker exec mssql_tools sh -c  "/opt/mssql-tools/bin/sqlcmd -S 172.16.10.250 -U SA -P P@ssword -i script.sql"    #run .SQL file in container using sql-tool, you should change the IP of the sql instance
@@ -303,6 +311,7 @@ net localgroup "Remote Desktop Users" "dev" /delete  #delete 'dev' user from rem
 # -------------- Nuget Restore package
 ```
 nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
+nuget.exe sources update -Name abcSource -UserName -Password
 nuget sources remove -Name abcSource
 nuget restore -PackagesDirectory .
 ./nuget.exe push -source "PartsUnlimitedShared" -ApiKey VSTS "C:\PartsUnlimited.Shared.1.0.0.nupkg"
