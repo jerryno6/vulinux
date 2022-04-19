@@ -185,8 +185,9 @@ git log
 git log --stat
 git log -5 --oneline      # show the last 5 logs 
 git stash list|show|clear
-git stash save -u 'Some changes'   # stash current changes -u=include UNTRACKED files
-git stash pop                   # pop a stash, and apply it to current branch
+git stash save -u 'Some changes'   //stash current changes -u=include UNTRACKED files
+git stash pop                   //pop a stash, and apply it to current branch
+git stash apply                   //apply a stash, and apply it to current branch
 git stash drop
 git diff --cached --binary > mypatch.patch  # export stagged  to .patch file
 git diff > mypatch.patch        # export diff to .patch file
@@ -280,11 +281,13 @@ docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cass
 docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
 ```
 
-# -------------- Database SQLServer docker
-```
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1433:1433 --name todosql -d mcr.microsoft.com/mssql/server:2019-latest  #run sql on docker
-docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
+-------------- local stack
+docker run -rm -it 4566:4566 localStack/localStack
+docker run -d 4566:4566 localStack/localStack
 
+-------------- Database SQLServer docker
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
+docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
 docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
 docker cp "/Users/vule/Downloads/dbscript/script.sql" mssql_tools:/script.sql     #copy the .sql file from host to container
 docker exec mssql_tools sh -c  "/opt/mssql-tools/bin/sqlcmd -S 172.16.10.250 -U SA -P P@ssword -i script.sql"    #run .SQL file in container using sql-tool, you should change the IP of the sql instance
