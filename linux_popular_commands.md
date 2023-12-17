@@ -210,6 +210,10 @@ press i for insert, edit file as you want
 use :wq to write changes
 git push --force                    # to update history
 
+git submodule update
+
+git commit --amend -m 'I change the comment of last commit'
+
 git rm -r --cached .                # remove everything from the repository to fix .gitignore
 git add .                           # add only files you need to track
 git commit -m '.gitignore fix'      # commit to update
@@ -228,6 +232,7 @@ git config credential.https://VuLeCL@bitbucket.org vu.le.extern@galeria.de
 git config --global credential.helper osxkeychain --fix for wrong credential on mac
 git config --global credential.helper wincred --fix for wrong credential on windows
 git config --global --unset user.password
+git config --global ledangvu@gmail.com
 ```
 
 # -------- linux command line
@@ -286,6 +291,7 @@ docker run -rm -it 4566:4566 localStack/localStack
 docker run -d 4566:4566 localStack/localStack
 
 -------------- Database SQLServer docker
+```
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
 docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
 docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
@@ -335,6 +341,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
 Ctrl K, S: Show all shortcuts in VSCode
 
 # bash
-`
+```
 alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
-`
+sam build --parallel --cached
+sam deploy --profile vule-stg 
+cfn-lint ./template.yml
+~/.aws/config
+```
