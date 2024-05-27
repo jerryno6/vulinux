@@ -1,6 +1,9 @@
 
 # --------------docker cli
-docker login -u <user> -p <pwd> odacitest.azurecr.io
+
+``` cmd
+docker login -u <user> vule14registry.azurecr.io
+cat ~/my_password.txt | docker login --username foo --password-stdin #it read password from my_passowrd.txt file and login
 docker network create --driver bridge my_network_playground
 docker network rm my_network_playground
 docker network connect my_network_playground container1    #connect a running container to network
@@ -12,19 +15,20 @@ docker images
 docker image rm imagge_id
 
 docker run -d --name some_name --net NAME_OF_NETWORK abc.com/cassandra:3.11
+docker run -d --name some_name --net NAME_OF_NETWORK abc.com/cassandra:3.11 -e DBPASSWORD=123456
 docker run -d --name some_name abc.com/cassandra:3.11
 docker run -d -p 5000:5000 --name registry registry:2   #-p host:container
-docker build -t ledangvu/ledangvu_hello_docker:1.0
+docker build -t ledangvu/ledangvu_hello_docker:1.0 .
 docker run -d -p 5000:80 ledangvu/ledangvu_hello_docker:1.0
 docker tag hello-world localhost:5000/hello-world:1.0
 docker push ledangvu/ledangvu_hello_docker:1.0
 
 docker inspect containerid  # see the port that docker using
 docker build -t my_project .
-docker run -it --rm -p 5000:80 --name myprojectTest MyProject
+docker run -it --rm -p 5000:80 --name myprojectTest my_project
 docker exec -it 79 bash
 
- # copy file or folder between docker & host
+# copy file or folder between docker & host
 docker cp foo.txt mycontainer:/foo.txt  
 docker cp mycontainer:/foo.txt foo.txt  
 docker cp src/. mycontainer:/target
@@ -48,20 +52,32 @@ docker-compose build
 docker-compose up  --Builds, (re)creates, starts, and attaches to containers for a service.
 docker-compose start 
 docker-compose logs -f SERVICE_NAME     #view log container
+```
 
-### Command for moving docker data to D partition
+## Command for moving docker data to D partition on windows
+
+```cmd
 wsl --shutdown
-wsl --export docker-desktop-data docker-desktop-data.tar
+wsl --export docker-desktop-data "D:\docker-desktop-data.tar"
 wsl --unregister docker-desktop-data
-mkdir D:\DockerDesktop\docker-desktop-data
-wsl --import docker-desktop-data D:\DockerDesktop\docker-desktop-data D:\DockerDesktop\docker-desktop-data.tar --version 2
+mkdir "D:\DockerDesktop\docker-desktop-data"
+wsl --import docker-desktop-data "D:\DockerDesktop\docker-desktop-data" "D:\docker-desktop-data.tar" --version 2
+del "D:\docker-desktop-data.tar"
+```
 
-wsl --export ubuntu ubuntu.tar
+## Command for moving docker data to D partition on Ubuntu
+
+```cmd
+wsl --export ubuntu "D:\ubuntu.tar"
 wsl --unregister ubuntu
 mkdir D:\DockerDesktop\ubuntu
-wsl --import ubuntu D:\DockerDesktop\ubuntu D:\DockerDesktop\ubuntu.tar --version 2
-# --------------kubectl cli
+wsl --import ubuntu "D:\DockerDesktop\ubuntu" "D:\ubuntu.tar" --version 2
+del "D:\ubuntu.tar"
 ```
+
+# --------------kubectl cli
+
+```cmd
 alias ku="microk8s kubectl"
 
 kubectl run discovery –image=ledangvu/ledangvu_aks_webapp –image-pull-policy=Never –port=5000
@@ -109,8 +125,9 @@ kubectl describe secret myserviceaccount-token-8vs7f # Change to your token name
 
 ```
 
-### -------------- Run kubernetes dashboard
-```
+## -------------- Run kubernetes dashboard
+
+```cmd
 #Install Kubernetes Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
 
@@ -129,30 +146,39 @@ kubectl proxy
 # Follow this link to go to dashboard
 http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 ```
-kubectl delete -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.2/components.yaml
 
-kubectl delete -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+kubectl delete -f <https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.2/components.yaml>
+
+kubectl delete -f <https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml>
 
 New-Item "$env:USERPROFILE\.wslconfig" -ItemType File -Value "[wsl2]
 memory=8GB # Limits VM memory in WSL 2 to 8 GB"
 
 ### helm
+
 helm install ./contoso-webapp
 
 # react and node
-### NPM
+
+## NPM
+
 npm run build  # run production build
 
 # -------------- dotnet core command line
-```
+
+```cmd
 # move to folder of api Project run 2 command line
 cd Projects/MyProject/Company.Helloworld
 dotnet publish -c Release
 dotnet run
+dotnet dev-certs https
+dotnet dev-certs https --trust 
+
 ```
 
 # -------------- Entity Framework & Sql
-```
+
+```cmd
 dotnet ef migration list
 dotnet ef database update
 dotnet ef database update 20191018114616_SetDataCompressionOnEverything
@@ -161,25 +187,26 @@ dotnet ef migrations add
 ```
 
 # -------------- git
-```
+
+```cmd
 git help [fetch|pull|commit...]
 git config --global core.excludesfile ~/.gitignore_global   #config for ignoring files globally
 git clone -b <branch> --single-branch <url>
 git commit -m "Commit message"
 git merge develop       # merge develop branch to current branch
-git push origin HEAD  	 #  or <branch_name>
+git push origin HEAD    #  or <branch_name>
 
 git fetch origin --prune    # clean stale branches & fetch new from origin
 
 git checkout -b feature_x   # create a new branch named "feature_x" and switch to it using
-git checkout master 		 # switch back to master
+git checkout master    # switch back to master
 git checkout abc.txt        # revert file abc.txt
 git checkout .              # discard all changes
 git branch                  # -a : list all branches or local branches only
 git branch -a               # list all branches including remote branch
-git branch -d feature_x		 # git delete branch
+git branch -d feature_x   # git delete branch
 git branch -m <old-branch-name> <new-branch-name> # rename branch
-git pull					 # update repository
+git pull      # update repository
 git pull origin develop     # pull from develop branch and merge to current branch (you are not standing at develop)
 git log
 git log --stat
@@ -193,14 +220,14 @@ git diff --cached --binary > mypatch.patch  # export stagged  to .patch file
 git diff > mypatch.patch        # export diff to .patch file
 git diff --staged               # show differences of staged items
 git apply mypatch.patch         # apply patch file to current branch
-git merge <branch>			 # merge <branch> to active branch
-git diff <source_branch> <target_branch>	 # review merging changes
+git merge <branch>    # merge <branch> to active branch
+git diff <source_branch> <target_branch>  # review merging changes
 git diff HEAD path_to_file     # compare diff between current file and HEAD
-git status 					 # see status all changes
+git status       # see status all changes
 git add abc/abc.cs
 git add *
 git reset --remove all staged
-git reset --hard origin/<branch_name> 	 # delete commited in local
+git reset --hard origin/<branch_name>   # delete commited in local
 git clean -df                           # delete untracked files in local
 git apply abc.diff  # apply a patch to current source
 git diff --cached > mypatch.patch     # stage everything & create patch
@@ -235,13 +262,25 @@ git config --global --unset user.password
 git config --global ledangvu@gmail.com
 ```
 
-# -------- linux command line
+# -------- python
+
+```cmd
+pip install -r requirements.txt
+pip install .   # install dependencies package from pyproject.toml
+pip install .[test] #install dependencies packages for test section in pyproject.toml
 ```
+
+# -------- linux command line
+
+```cmd
 whereis android-sdk     # find path of android-sdk folder
 chmod a+x runmsv.sh   # allow running bash file
+chmod 700 runmsv.sh   # allow running bash file
+chmod 600 EC2.pem   # set permission for pem file
 sh runmsv.sh          # run bash file
 ssh -p 22 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
 ssh vule@172.16.10.252            # remote pc
+ssh -i "EC2.pem" ec2-user@3.21.145.23
 sudo nano /etc/ssh/sshd_config    # edit ssh
 sudo poweroff | reboot         
 sudo service docker start
@@ -261,7 +300,8 @@ rm -rf dir1         #remove a directory folder wihtout being prompt
 ```
 
 # -------------- windows service command line
-```
+
+```cmd
 sc.exe create "ABC.AccountService" binPath="C:\Apps\ABC.AccountService\ABC.AccountService.exe" start=auto;
 sc.exe start "ABC.AccountService";
 sc.exe stop "ABC.AccountService";
@@ -270,19 +310,20 @@ sc.exe delete "ABC.AccountService";
 ```
 
 # -------------- Database cassandra
-```
+
+```cmd
 docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
 docker run --name cas -p 9042-9043:9042-9043 -d cassandra:3.11.4
 
-docker run --name some-cassandra -d cassandra:3.11.4		#run cassandra
-docker run --name some-cassandra -d cassandra:latest		#run cassandra using latest version
+docker run --name some-cassandra -d cassandra:3.11.4  #run cassandra
+docker run --name some-cassandra -d cassandra:latest  #run cassandra using latest version
 docker exec -ti cas0 cqlsh  #run cqlsh on the docker to query data
 desc keyspaces;             #list all keyspaces
 use keyspace_name;          #must have the semi colon or the command won't be run
 desc tables;                #list all tables
 
-docker run --name mycas -d cassandra:3.11.1		#run cassandra
-docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra	 #connect to cassandra
+docker run --name mycas -d cassandra:3.11.1  #run cassandra
+docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra  #connect to cassandra
 docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
 ```
 
@@ -291,7 +332,8 @@ docker run -rm -it 4566:4566 localStack/localStack
 docker run -d 4566:4566 localStack/localStack
 
 -------------- Database SQLServer docker
-```
+
+```cmd
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
 docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
 docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
@@ -307,10 +349,24 @@ SQL Server cli
 SqlCmd -E -S MyServerMyInstance –Q “BACKUP DATABASE [MyDB] TO DISK=’D:BackupsMyDB.bak'”
 SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB.bak'”
 ```
-# -------------- windows Server 
+
+# -------------- postgresql
+
+```cmd
+sudo chmod 700 /Library/PostgreSQL/16/data
+sudo chmod 700 /Library/PostgreSQL/16/data/postmaster.pid
+sudo chmod +r /Library/PostgreSQL/16/data/pg_hba.conf
+sudo -u postgres pg_ctl -D /Library/PostgreSQL/16/data restart
+sudo -u postgres pg_ctl -D /Library/PostgreSQL/16/data start
+sudo -u postgres pg_ctl -D /Library/PostgreSQL/16/data status
+postgres -p 5432
 ```
+
+# -------------- windows Server
+
+```cmd
 sc.exe create "MyFirstWindowsService" binPath="C:\app\MyFirstWindowsService.exe" start=Auto type=system      --install windows service
-sc.exe  "MyFirstWindowsService"      --delete a windows service
+sc.exe "MyFirstWindowsService"      --delete a windows service
 netstat -a -n -p tcp -o     --list all listening ports & app
 
 net localgroup "Remote Desktop Users" "dev" /add  #add dev user to remote desktop group
@@ -318,7 +374,8 @@ net localgroup "Remote Desktop Users" "dev" /delete  #delete 'dev' user from rem
 ```
 
 # -------------- Nuget Restore package
-```
+
+```cmd
 nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
 nuget.exe sources update -Name abcSource -UserName -Password
 nuget sources remove -Name abcSource
@@ -327,24 +384,50 @@ nuget restore -PackagesDirectory .
 ```
 
 # -------------- OSX
-```
+
+```cmd
 /private/etc/hosts      -- path to hosts file on OSX
 du -sh *                -- list files/folder's size
 ```
 
 # -------------- Powershell
-```
+
+```cmd
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
 ```
 
 # -------------- Visual studio code
+
 Ctrl K, S: Show all shortcuts in VSCode
 
 # bash
-```
+
+```cmd
 alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
 sam build --parallel --cached
 sam deploy --profile vule-stg 
 cfn-lint ./template.yml
 ~/.aws/config
+```
+
+# curl
+
+## GET request
+
+```cmd
+curl https://api.restful-api.dev/objects
+```
+
+## POST request with JSON
+
+```cmd
+curl -d '{"name":"Apple MacBook Pro 16","data":{"year":2019,"price":1849.99,"CPU model":"Intel Core i9","Hard disk size":"1 TB"}}' -H 'Content-Type: application/json' 
+  https://api.restful-api.dev/objects
+```
+
+## PUT request
+
+```cmd
+curl -d @request.json -H 'Content-Type: application/json' 
+  -X PUT http://localhost:8082/spring-rest/foos/9
 ```
