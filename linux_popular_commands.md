@@ -54,6 +54,50 @@ docker-compose start
 docker-compose logs -f SERVICE_NAME     #view log container
 ```
 
+## -------------- docker cassandra
+
+```cmd
+docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
+docker run --name cas -p 9042-9043:9042-9043 -d cassandra:3.11.4
+
+docker run --name some-cassandra -d cassandra:3.11.4  #run cassandra
+docker run --name some-cassandra -d cassandra:latest  #run cassandra using latest version
+docker exec -ti cas0 cqlsh  #run cqlsh on the docker to query data
+desc keyspaces;             #list all keyspaces
+use keyspace_name;          #must have the semi colon or the command won't be run
+desc tables;                #list all tables
+
+docker run --name mycas -d cassandra:3.11.1  #run cassandra
+docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra  #connect to cassandra
+docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
+```
+
+## -------------- aws local stack
+
+```cmd
+docker run -rm -it 4566:4566 localStack/localStack
+docker run -d 4566:4566 localStack/localStack
+```
+
+## -------------- Database SQLServer docker
+
+```cmd
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
+docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
+docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
+docker cp "/Users/vule/Downloads/dbscript/script.sql" mssql_tools:/script.sql     #copy the .sql file from host to container
+docker exec mssql_tools sh -c  "/opt/mssql-tools/bin/sqlcmd -S 172.16.10.250 -U SA -P P@ssword -i script.sql"    #run .SQL file in container using sql-tool, you should change the IP of the sql instance
+docker rm -f mssql_tools    #remove sqltool
+docker exec -it 17a /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssword #start sql chmod
+    1> SELECT SYSDATETIMEOFFSET();
+    2> GO
+
+#from now on, we can use MS SQLManagement or Azure Data Studio  to connect to the Sql instance running on container**
+SQL Server cli
+SqlCmd -E -S MyServerMyInstance –Q “BACKUP DATABASE [MyDB] TO DISK=’D:BackupsMyDB.bak'”
+SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB.bak'”
+```
+
 ## Command for moving docker data to D partition on windows
 
 ```cmd
@@ -176,7 +220,7 @@ dotnet dev-certs https --trust
 
 ```
 
-# -------------- Entity Framework & Sql
+## -------------- Entity Framework & Sql
 
 ```cmd
 dotnet ef migration list
@@ -191,6 +235,7 @@ dotnet ef migrations add
 ```cmd
 git help [fetch|pull|commit...]
 git config --global core.excludesfile ~/.gitignore_global   #config for ignoring files globally
+git config --global core.sshcommand "C:/Windows/System32/OpenSSH/ssh.exe" # make git use windows openssh
 git clone -b <branch> --single-branch <url>
 git commit -m "Commit message"
 git merge develop       # merge develop branch to current branch
@@ -278,9 +323,17 @@ chmod a+x runmsv.sh   # allow running bash file
 chmod 700 runmsv.sh   # allow running bash file
 chmod 600 EC2.pem   # set permission for pem file
 sh runmsv.sh          # run bash file
-ssh -p 22 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
-ssh vule@172.16.10.252            # remote pc
+ssh-copy-id -i ~/.ssh/mykey.pub user@host_ip_address # install public key to remote server
+ssh-import-id-gh <username> # import public ssh key from github then you can ssh using private key
+ssh -p 222 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
+ssh -p vule@172.16.10.252            # remote pc using user/password
 ssh -i "EC2.pem" ec2-user@3.21.145.23
+ssh root@SERVER_IPADDR -L 80:NODE_IPADDR:80 # ssh to remote SERVER and forward port 80 to a NODE machine
+scp myfile.txt user@dest:/path  #upload a file to remote server
+scp -rp sourcedirectory user@dest:/path #upload a folder to remote server
+scp user@remote:/path/to/file /local/path # download a file from a remote server
+scp -r user@remote:/path/to/folder /local/path # download a folder from a remote server
+
 sudo nano /etc/ssh/sshd_config    # edit ssh
 sudo poweroff | reboot         
 sudo service docker start
@@ -296,7 +349,11 @@ sudo apt-get -y install openssh-server
 sudo service ssh status
 hostname -I         # find out the ip of that server to connect
 ssh vule@192.168.1.249            # remote to that pc
+nc -zv 192.168.1.15 22            # check if port 22 is open on that pc
 rm -rf dir1         #remove a directory folder wihtout being prompt
+
+restart -h now
+shutdown -h now
 ```
 
 # -------------- windows service command line
@@ -307,47 +364,6 @@ sc.exe start "ABC.AccountService";
 sc.exe stop "ABC.AccountService";
 sc.exe QUERY "ABC.AccountService";
 sc.exe delete "ABC.AccountService";
-```
-
-# -------------- Database cassandra
-
-```cmd
-docker run --name cas -d cassandra:3.11 -e CASSANDRA_BROADCAST_ADDRESS=192.168.43.218
-docker run --name cas -p 9042-9043:9042-9043 -d cassandra:3.11.4
-
-docker run --name some-cassandra -d cassandra:3.11.4  #run cassandra
-docker run --name some-cassandra -d cassandra:latest  #run cassandra using latest version
-docker exec -ti cas0 cqlsh  #run cqlsh on the docker to query data
-desc keyspaces;             #list all keyspaces
-use keyspace_name;          #must have the semi colon or the command won't be run
-desc tables;                #list all tables
-
-docker run --name mycas -d cassandra:3.11.1  #run cassandra
-docker run --name some-app --link some-cassandra:cassandra -d app-that-uses-cassandra  #connect to cassandra
-docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
-```
-
--------------- local stack
-docker run -rm -it 4566:4566 localStack/localStack
-docker run -d 4566:4566 localStack/localStack
-
--------------- Database SQLServer docker
-
-```cmd
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssword' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest  #run sql on docker
-docker run --name cloudbeaver --rm -ti -p 28978:8978 -v d:/dbeaver_data/cloudbeaver/workspace:/opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest #goto localhost:28978 to use
-docker run -d -it --name mssql_tools mcr.microsoft.com/mssql-tools    #run sql tool on docker, to execute the .sql command
-docker cp "/Users/vule/Downloads/dbscript/script.sql" mssql_tools:/script.sql     #copy the .sql file from host to container
-docker exec mssql_tools sh -c  "/opt/mssql-tools/bin/sqlcmd -S 172.16.10.250 -U SA -P P@ssword -i script.sql"    #run .SQL file in container using sql-tool, you should change the IP of the sql instance
-docker rm -f mssql_tools    #remove sqltool
-docker exec -it 17a /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssword #start sql chmod
-    1> SELECT SYSDATETIMEOFFSET();
-    2> GO
-
-#from now on, we can use MS SQLManagement or Azure Data Studio  to connect to the Sql instance running on container**
-SQL Server cli
-SqlCmd -E -S MyServerMyInstance –Q “BACKUP DATABASE [MyDB] TO DISK=’D:BackupsMyDB.bak'”
-SqlCmd -E -S MyServer –Q “RESTORE DATABASE [MyDB] FROM DISK=’D:BackupsMyDB.bak'”
 ```
 
 # -------------- postgresql
@@ -400,7 +416,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
 
 Ctrl K, S: Show all shortcuts in VSCode
 
-# bash
+# AWS ASM
 
 ```cmd
 alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
@@ -430,4 +446,28 @@ curl -d '{"name":"Apple MacBook Pro 16","data":{"year":2019,"price":1849.99,"CPU
 ```cmd
 curl -d @request.json -H 'Content-Type: application/json' 
   -X PUT http://localhost:8082/spring-rest/foos/9
+```
+
+# Nextdns
+
+Ssh to router and use these commmand
+
+```cmd
+nextdns start
+nextdns stop
+nextdns restart
+```
+
+Configure the local host to point to NextDNS or not:
+
+```cmd
+nextdns activate
+nextdns deactivate
+```
+
+logs and help
+
+```cmd
+nextdns log # Explore daemon logs:
+nextdns help # For more commands
 ```
