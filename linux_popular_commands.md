@@ -3,6 +3,9 @@
 
 ``` cmd
 docker login -u <user> vule14registry.azurecr.io
+docker login -u <YOUR_USERNAME> # login using access token
+vi ~/.docker/config.json # remove the line credStore if got error while login
+
 cat ~/my_password.txt | docker login --username foo --password-stdin #it read password from my_passowrd.txt file and login
 docker network create --driver bridge my_network_playground
 docker network rm my_network_playground
@@ -323,6 +326,9 @@ chmod a+x runmsv.sh   # allow running bash file
 chmod 700 runmsv.sh   # allow running bash file
 chmod 600 EC2.pem   # set permission for pem file
 sh runmsv.sh          # run bash file
+vi /etc/ssh/sshd_config  # edit ssh config, and you can set 'PasswordAuthentication no'
+sudo sshd -T | grep -E -i 'ChallengeResponseAuthentication|PasswordAuthentication|UsePAM|PermitRootLogin' #use this to verify settings
+grep 'sshd' /var/log/auth.log | sort | uniq -c | sort -nr | head -n 100
 ssh-copy-id -i ~/.ssh/mykey.pub user@host_ip_address # install public key to remote server
 ssh-import-id-gh <username> # import public ssh key from github then you can ssh using private key
 ssh -p 222 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
