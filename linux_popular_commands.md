@@ -7,8 +7,8 @@ docker login -u <YOUR_USERNAME> # login using access token
 vi ~/.docker/config.json # remove the line credStore if got error while login
 
 cat ~/my_password.txt | docker login --username foo --password-stdin #it read password from my_passowrd.txt file and login
-docker network create --driver bridge my_network_playground
 docker network rm my_network_playground
+docker network create --driver bridge my_network_playground
 docker network connect my_network_playground container1    #connect a running container to network
 docker network disconnect my_network_playground container1
 
@@ -44,6 +44,7 @@ docker rmi IMAGE_NAME   #remove image
 docker stats            #status of containers: ID|name|%cpu|%mem usage|NetIO|PIDS
 docker inspect MY_CONTAINER #get details of container
 docker logs -f MY_CONTAINER    #view log of containers & follow up until we stop it by Ctrl + C
+docker logs -f 45 | grep --line-buffered "some-key-word-in-log" # see log with grep
 docker inspect CONTAINER_ID | grep "IPAddress" #display container IP
 
 docker volume ls        #list all volumes
