@@ -15,7 +15,7 @@ docker network disconnect my_network_playground container1
 ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux
 docker ps
 docker images
-docker image rm imagge_id
+docker rmi image_id
 
 docker run -d --name some_name --net NAME_OF_NETWORK abc.com/cassandra:3.11
 docker run -d --name some_name --net NAME_OF_NETWORK abc.com/cassandra:3.11 -e DBPASSWORD=123456
@@ -51,11 +51,16 @@ docker volume ls        #list all volumes
 docker volume prune     #delete not used volumes
 docker system prune     #remove unused/dangling images, containers, volumes, networks
 
-docker-compose -f docker-compose.yml -f docker-compose.docker-compose.override.yml build -d
+docker-compose -f docker-compose.yml -f docker-compose.override.yml build -d
 docker-compose build
-docker-compose up  --Builds, (re)creates, starts, and attaches to containers for a service.
+docker-compose up  #Builds, (re)creates, starts, and attaches to containers for a service.
 docker-compose start 
 docker-compose logs -f SERVICE_NAME     #view log container
+
+# Context
+docker context create --docker host=ssh://root@44.222.77.184 my-context
+docker --context my-context logs -f 88
+docker context use desktop-linux # use desktop-linux as default context
 ```
 
 ## -------------- docker cassandra
