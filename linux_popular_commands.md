@@ -58,7 +58,12 @@ docker-compose start
 docker-compose logs -f SERVICE_NAME     #view log container
 
 # Context
-docker context create --docker host=ssh://root@44.222.77.184 my-context
+docker context create --docker host=ssh://my_username@44.222.77.184 my-context
+docker context update my-context --description "Test context"
+docker context update \
+    --description "some description" \
+    --docker "host=ssh://myserver:2376" \
+    my-context #update docker host
 docker --context my-context logs -f 88
 docker context use desktop-linux # use desktop-linux as default context
 ```
