@@ -68,6 +68,15 @@ docker --context my-context logs -f 88
 docker context use desktop-linux # use desktop-linux as default context
 ```
 
+Install colima, instead of docker desktop
+
+```cmd
+brew install colima
+sudo ln ~/.colima/default/docker.sock /var/run # to update sock for docker
+brew services start colima # start colima and launch at login
+brew services stop colima # Stop the service and unregister it from launching at login
+```
+
 ## -------------- docker cassandra
 
 ```cmd
@@ -350,6 +359,8 @@ scp myfile.txt user@dest:/path  #upload a file to remote server
 scp -rp sourcedirectory user@dest:/path #upload a folder to remote server
 scp user@remote:/path/to/file /local/path # download a file from a remote server
 scp -r user@remote:/path/to/folder /local/path # download a folder from a remote server
+rsync -a docker-compose.yml host.ecs:/root/code/my-app/ #host.ecs is the host config of ssh config
+rsync -a docker-compose.traefik.yml root@your-server.example.com:/root/code/traefik-public/
 
 sudo nano /etc/ssh/sshd_config    # edit ssh
 sudo poweroff | reboot         
