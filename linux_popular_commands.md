@@ -259,6 +259,8 @@ dotnet ef migrations add
 git help [fetch|pull|commit...]
 git config --global core.excludesfile ~/.gitignore_global   #config for ignoring files globally
 git config --global core.sshcommand "C:/Windows/System32/OpenSSH/ssh.exe" # make git use windows openssh
+git config user.name your_user_example
+git config user.email your@email.example
 git clone -b <branch> --single-branch <url>
 git commit -m "Commit message"
 git merge develop       # merge develop branch to current branch
