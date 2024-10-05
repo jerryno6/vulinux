@@ -72,9 +72,13 @@ Install colima, instead of docker desktop
 
 ```cmd
 brew install colima
-sudo ln ~/.colima/default/docker.sock /var/run # to update sock for docker
+sudo ln -sf ~/.colima/default/docker.sock /var/run/docker.sock # update sock for docker
+# to unlink: unlink /var/run/docker.sock
+# or export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 brew services start colima # start colima and launch at login
 brew services stop colima # Stop the service and unregister it from launching at login
+colima start --cpu 4 --memory 8
+colima status
 ```
 
 ## -------------- docker cassandra
@@ -257,6 +261,7 @@ dotnet ef migrations add
 
 ```cmd
 git help [fetch|pull|commit...]
+git config --list --local #view all config of local repo
 git config --global core.excludesfile ~/.gitignore_global   #config for ignoring files globally
 git config --global core.sshcommand "C:/Windows/System32/OpenSSH/ssh.exe" # make git use windows openssh
 git config user.name your_user_example
@@ -321,7 +326,7 @@ git remote -v                           # display the fetch & push url of reposi
 git remote show origin                  # show all branches & url of repository & behind/uptodate status
 git remote add origin https://github.com/user/repo.git # add a remote
 git remote rm                           # remove a remote
-git push -u ldv --all                    # push all to new remote branch
+git push -u ldv --all                    # push all to new remote brance
 git push -i origin master               #push master branch to remote origin
 
 
@@ -348,10 +353,10 @@ chmod a+x runmsv.sh   # allow running bash file
 chmod 700 runmsv.sh   # allow running bash file
 chmod 600 EC2.pem   # set permission for pem file
 sh runmsv.sh          # run bash file
-vi /etc/ssh/sshd_config  # edit ssh config, and you can set 'PasswordAuthentication no'
-sudo sshd -T | grep -E -i 'ChallengeResponseAuthentication|PasswordAuthentication|UsePAM|PermitRootLogin' #use this to verify settings
-grep 'sshd' /var/log/auth.log | sort | uniq -c | sort -nr | head -n 100
-ssh-copy-id -i ~/.ssh/mykey.pub user@host_ip_address # install public key to remote server
+vi /etc/ssh/sshd_config  # edit ssh config, and you can set 'PasswordAuthentication no' 'PubkeyAuthentication yes'
+sudo sshd -T | grep -E -i 'ChallengeResponseAuthentication|PasswordAuthentication|PermitRootLogin' #use this to verify settings
+grep 'sshd' /var/log/auth.log | sort | uniq -c | sort -nr | head -n 100 # check auth logs of ssh
+ssh-copy-id -i ~/.ssh/sykey.pub user@host_ip_address # install public key to remote server
 ssh-import-id-gh <username> # import public ssh key from github then you can ssh using private key
 ssh -p 222 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
 ssh -p vule@172.16.10.252            # remote pc using user/password
@@ -361,8 +366,9 @@ scp myfile.txt user@dest:/path  #upload a file to remote server
 scp -rp sourcedirectory user@dest:/path #upload a folder to remote server
 scp user@remote:/path/to/file /local/path # download a file from a remote server
 scp -r user@remote:/path/to/folder /local/path # download a folder from a remote server
-rsync -a docker-compose.yml host.ecs:/root/code/my-app/ #host.ecs is the host config of ssh config
+rsync -a docker-compose.yml host.ecs:/root/app/ #host.ecs is the host config of ssh config
 rsync -a docker-compose.traefik.yml root@your-server.example.com:/root/code/traefik-public/
+rsync host.ecs:/root/abc abc  # download folder abc from host.ecs to local
 
 sudo nano /etc/ssh/sshd_config    # edit ssh
 sudo poweroff | reboot         
@@ -374,15 +380,40 @@ less readme.txt     # view file
 hostname -I         # show IPs of machine
 df -h --total       # check for free space of disk
 sudo usermod -aG docker your-user    # add current user to docker group, so that dont need sudo each time
-#script to install ssh
+
+#script to install ssh server
 sudo apt-get -y install openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
 sudo service ssh status
+
+#secure ssh server
+sudo vi /etc/ssh/sshd_config # set PasswordAuthentication no
+sudo systemctl restart sshd
+
+# use this to test if username password method is allowed
+ssh -v -n \
+  -o Batchmode=yes \
+  -o StrictHostKeyChecking=no \
+  -o UserKnownHostsFile=/dev/null \
+  DOES_NOT_EXIST@localhost
+
 hostname -I         # find out the ip of that server to connect
 ssh vule@192.168.1.249            # remote to that pc
 nc -zv 192.168.1.15 22            # check if port 22 is open on that pc
-rm -rf dir1         #remove a directory folder wihtout being prompt
+```
 
-restart -h now
+# ubuntu cli
+
+```cmd
+su - root # login as root
+sudo passwd root  # change root password
+sudo adduser new_username # add new user
+sudo passwd new_username # change password for new user
+rm -rf dir1         #remove a directory folder wihtout being prompt
+cut -d: -f1 /etc/passwd # list all local users
+
+reboot -h now
 shutdown -h now
 ```
 
@@ -444,30 +475,20 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
 
 # -------------- Visual studio code
 
-Ctrl K, S: Show all shortcuts in VSCode
-
-# AWS ASM
-
-```cmd
-alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
-sam build --parallel --cached
-sam deploy --profile vule-stg 
-cfn-lint ./template.yml
-~/.aws/config
-```
+Ctrl K, S: Show all huthortcuts in VSCode
 
 # curl
 
 ## GET request
 
 ```cmd
-curl https://api.restful-api.dev/objects
+curl -X GET https://api.restful-api.dev/objects
 ```
 
 ## POST request with JSON
 
 ```cmd
-curl -d '{"name":"Apple MacBook Pro 16","data":{"year":2019,"price":1849.99,"CPU model":"Intel Core i9","Hard disk size":"1 TB"}}' -H 'Content-Type: application/json' 
+curl -X POST -d '{"name":"Apple MacBook Pro 16"}' -H 'Content-Type: application/json' 
   https://api.restful-api.dev/objects
 ```
 
@@ -500,4 +521,14 @@ logs and help
 ```cmd
 nextdns log # Explore daemon logs:
 nextdns help # For more commands
+```
+
+# Useful alias
+
+```cmd
+alias d="docker" 
+alias dps="docker ps" 
+alias s="ssh" 
+alias zshopen="vi ~/.zshrc && source ~/.zshrc" 
+alias zshreload="source ~/.zshrc" 
 ```
