@@ -1,5 +1,15 @@
+# Popular commands for Linux, Docker, Kubernetes, Helm, and more
 
-# --------------docker cli
+## --------------docker cli
+
+Edit this file to change the format of `docker ps`
+~/.docker/config.json
+
+```json
+{
+  "psFormat": "table {{.ID}}\\t{{.Names}}\\t{{.Image}}\\t{{.CreatedAt}}\\t{{.Status}}\\t{{.Ports}}"
+}
+```
 
 ``` cmd
 docker login -u <user> vule14registry.azurecr.io
@@ -79,6 +89,14 @@ brew services start colima # start colima and launch at login
 brew services stop colima # Stop the service and unregister it from launching at login
 colima start --cpu 4 --memory 8
 colima status
+
+```
+
+Install portainer
+
+```cmd
+docker volume create portainer_data
+docker run -d -p 9000:9000 -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 ```
 
 ## -------------- docker cassandra
@@ -146,16 +164,19 @@ wsl --import ubuntu "D:\DockerDesktop\ubuntu" "D:\ubuntu.tar" --version 2
 del "D:\ubuntu.tar"
 ```
 
-# --------------kubectl cli
+## --------------kubectl cli
 
 ```cmd
 alias ku="microk8s kubectl"
 
+kubectl get all
+kubectl run nginx --image=nginx --port=80 # create a pod
 kubectl run discovery –image=ledangvu/ledangvu_aks_webapp –image-pull-policy=Never –port=5000
 kubectl describe svc my-dep-svc --namespace=webapps #describe services in kubectl
 kubectl get pods
 kubectl describe pods
 kubectl describe pod contoso-website-bffdf5478-84mrc -n default
+kubectl delete pods nginx
 
 # clean up 
 kubectl delete svc --namespace=default contoso-website
@@ -163,8 +184,10 @@ kubectl delete deployment contoso-website
 kubectl delete all -l app=contoso-website
 
 kubectl create deployment contoso-website --image=ledangvu/ledangvu_aks_webapp
-kubectl expose deployment/contoso-website --type="NodePort" --port 80 --target-port 80
+kubectl expose deployment/contoso-website --type=NodePort --port 80 --target-port 80
+kubectl expose deployment/contoso-website --type=ClusterIP --port 80 --target-port 80
 kubectl expose pod contoso-website-759494599-kcfq4 --type NodePort --port 80
+kubectl expose pod redis --port=6379 --name redis-service #clusterIP
 kubectl get svc --all-namespaces
 kubectl port-forward deployment/contoso-website 5000:80  ; run localhost:5000 to test it
 
@@ -176,8 +199,8 @@ kubectl rollout undo deployments/contoso-website
 kubectl scale --replicas=1 deployment/contoso-website
 kubectl get pods -o wide
 
-
 kubectl create service nodeport nginx-depl --tcp=80:80
+kubectl create service clusterip nginx --tcp=80:80 --image=nginx -n default --labels="app=nginx"
 kubectl get deployments -n default -o yaml > mydeployments.yaml
 kubectl get deployments -n default -o json > mydeployments.json
 
@@ -194,6 +217,67 @@ kubectl create serviceaccount myserviceaccount
 kubectl describe serviceaccount myserviceaccount   #to get secret
 kubectl describe secret myserviceaccount-token-8vs7f # Change to your token name
 
+# replica set
+kubectl create -f replicaset-definition.yml
+kubectl get replicaset
+kubectl delete replicaset myapp-replicaset
+kubectl edit rs new-replica-set
+kubectl replace -f replicaset-definition.yml
+kubectl scale --replicas=6 -f replicaset-definition.yml
+kubectl scale rs --replicas=6 new-replica-set
+
+# deployment
+kubectl create -f deployment-definition.yml
+kubectl get deployments
+kubectl apply -f deployment-definition.yml
+kubectl set image deployment/myapp-deployment myapp=nginx:1.9.1
+kubectl delete deployment myapp-deployment
+kubectl edit deployment myapp-deployment --record
+kubectl replace -f deployment-definition.yml
+kubectl scale --replicas=6 -f deployment-definition.yml
+kubectl scale deployment --replicas=6 myapp-deployment
+
+# Rollout
+kubectl rollout status deployment/myapp-deployment
+kubectl rollout history deployment/myapp-deployment
+kubectl rollout undo deployment/myapp-deployment --to-revision=2
+
+# kubernetes cronjob
+kubectl create cronjob throw-dice-cron-job --image=kodekloud/throw-dice --schedule="30 21 * * *"
+
+# ingress resource
+kubectl create ingress ingress-test --rule="wear.my-online-store.com/wear*=wear-service:80"
+
+kubectl config view
+kubectl config set-context --current --namespace=my-namespace
+kubectl config use context my-cluster-name --kubeconfig=my-kube-config-file
+
+kubectl api-resources --namespaced=false
+kubectl label node node01 app_type=beta
+
+kubectl drain node01 --ignore-daemonsets
+kubectl uncordon node01
+```
+
+## --------------helm
+
+```cmd
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo remove bitnami
+helm list
+helm search hub wordpress
+helm search repo wordpress
+helm install bitnami/wordpress
+
+helm pull --untar bitnami/wordpress
+ls wordpress
+helm install my-app ./wordpress
+helm uninstall my-app
+
+helm repo update # grab latest update from repositories
+helm upgrade my-app bitnami/nginx --version 1.0.0
+helm history my-app
+helm rollback my-app 1
 ```
 
 ## -------------- Run kubernetes dashboard
@@ -225,17 +309,13 @@ kubectl delete -f <https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0
 New-Item "$env:USERPROFILE\.wslconfig" -ItemType File -Value "[wsl2]
 memory=8GB # Limits VM memory in WSL 2 to 8 GB"
 
+kubectl api-resources
+
 ### helm
 
 helm install ./contoso-webapp
 
-# react and node
-
-## NPM
-
-npm run build  # run production build
-
-# -------------- dotnet core command line
+## -------------- dotnet core command line
 
 ```cmd
 # move to folder of api Project run 2 command line
@@ -257,7 +337,7 @@ dotnet ef database drop
 dotnet ef migrations add
 ```
 
-# -------------- git
+## -------------- git
 
 ```cmd
 git help [fetch|pull|commit...]
@@ -337,7 +417,7 @@ git config --global --unset user.password
 git config --global ledangvu@gmail.com
 ```
 
-# -------- python
+## -------- python
 
 ```cmd
 pip install -r requirements.txt
@@ -345,7 +425,7 @@ pip install .   # install dependencies package from pyproject.toml
 pip install .[test] #install dependencies packages for test section in pyproject.toml
 ```
 
-# -------- linux command line
+## -------- linux command line
 
 ```cmd
 whereis android-sdk     # find path of android-sdk folder
@@ -354,14 +434,6 @@ chmod 700 runmsv.sh   # allow running bash file
 chmod 600 EC2.pem   # set permission for pem file
 sh runmsv.sh          # run bash file
 vi /etc/ssh/sshd_config  # edit ssh config, and you can set 'PasswordAuthentication no' 'PubkeyAuthentication yes'
-sudo sshd -T | grep -E -i 'ChallengeResponseAuthentication|PasswordAuthentication|PermitRootLogin' #use this to verify settings
-grep 'sshd' /var/log/auth.log | sort | uniq -c | sort -nr | head -n 100 # check auth logs of ssh
-ssh-copy-id -i ~/.ssh/sykey.pub user@host_ip_address # install public key to remote server
-ssh-import-id-gh <username> # import public ssh key from github then you can ssh using private key
-ssh -p 222 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
-ssh -p vule@172.16.10.252            # remote pc using user/password
-ssh -i "EC2.pem" ec2-user@3.21.145.23
-ssh root@SERVER_IPADDR -L 80:NODE_IPADDR:80 # ssh to remote SERVER and forward port 80 to a NODE machine
 scp myfile.txt user@dest:/path  #upload a file to remote server
 scp -rp sourcedirectory user@dest:/path #upload a folder to remote server
 scp user@remote:/path/to/file /local/path # download a file from a remote server
@@ -375,21 +447,50 @@ sudo poweroff | reboot
 sudo service docker start
 touch readme.txt    # create file readme.txt
 vim readme.txt      # edit file with vim
+:set ignorecase
 nano readme.txt     # edit file with nano
 less readme.txt     # view file 
+
+cat readme.txt
+cat abc.pub | base64 -w 0 # encode the public key
 hostname -I         # show IPs of machine
 df -h --total       # check for free space of disk
-sudo usermod -aG docker your-user    # add current user to docker group, so that dont need sudo each time
 
+hostname -I         # find out the ip of that server to connect
+ssh vule@192.168.1.249            # remote to that pc
+nc -zv 192.168.1.15 22            # check if port 22 is open on that pc
+```
+
+## ssh
+
+```cmd
 #script to install ssh server
 sudo apt-get -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 sudo service ssh status
 
+sudo apt-get install ssh-import-id
+ssh-copy-id -i ~/.ssh/sykey.pub user@host_ip_address # install public key to remote server
+ssh-import-id-gh <username> # import public ssh key from github then you can ssh using private key
+ssh -p 222 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
+ssh -p vule@172.16.10.252            # remote pc using user/password
+ssh -i "EC2.pem" ec2-user@3.21.145.23
+ssh root@SERVER_IPADDR -L 80:NODE_IPADDR:80 # ssh to remote SERVER and forward port 80 to a NODE machine
+ssh root@SERVER_IPADDR -R 8080:127.0.0.1:3000 # ssh to remote SERVER and forwards connections from remote:8080 to local:3000
+
 #secure ssh server
-sudo vi /etc/ssh/sshd_config # set PasswordAuthentication no
-sudo systemctl restart sshd
+sudo vi /etc/ssh/sshd_config
+sudo sed -i \
+  -e 's/#PermitRootLogin.*/PermitRootLogin no/g' \
+  -e 's/#PasswordAuthentication.*/PasswordAuthentication no/' \
+  -e 's/#PubkeyAuthentication.*/PubkeyAuthentication yes/' \
+  /etc/ssh/sshd_config
+
+sudo sshd -T | grep -E -i 'PubkeyAuthentication|PasswordAuthentication|PermitRootLogin' #use this to verify settings
+grep 'sshd' /var/log/auth.log | sort | uniq -c | sort -nr | head -n 100 # check auth logs of ssh
+
+sudo service ssh restart
 
 # use this to test if username password method is allowed
 ssh -v -n \
@@ -397,27 +498,28 @@ ssh -v -n \
   -o StrictHostKeyChecking=no \
   -o UserKnownHostsFile=/dev/null \
   DOES_NOT_EXIST@localhost
-
-hostname -I         # find out the ip of that server to connect
-ssh vule@192.168.1.249            # remote to that pc
-nc -zv 192.168.1.15 22            # check if port 22 is open on that pc
 ```
 
-# ubuntu cli
+## ubuntu cli
 
 ```cmd
 su - root # login as root
 sudo passwd root  # change root password
 sudo adduser new_username # add new user
+sudo usermod -aG docker your-user    # add current user to docker group, so that dont need sudo each time
 sudo passwd new_username # change password for new user
 rm -rf dir1         #remove a directory folder wihtout being prompt
 cut -d: -f1 /etc/passwd # list all local users
 
 reboot -h now
 shutdown -h now
+vi /etc/systemd/logind.conf # change the setting of suspend mode for the lid
+hostname
+sudo hostnamectl set-hostname host.example.com #change hostname
+cat /sys/class/dmi/id/product_uuid # get the UUID of the machine
 ```
 
-# -------------- windows service command line
+## -------------- windows service command line
 
 ```cmd
 sc.exe create "ABC.AccountService" binPath="C:\Apps\ABC.AccountService\ABC.AccountService.exe" start=auto;
@@ -427,7 +529,7 @@ sc.exe QUERY "ABC.AccountService";
 sc.exe delete "ABC.AccountService";
 ```
 
-# -------------- postgresql
+## -------------- postgresql
 
 ```cmd
 sudo chmod 700 /Library/PostgreSQL/16/data
@@ -439,7 +541,7 @@ sudo -u postgres pg_ctl -D /Library/PostgreSQL/16/data status
 postgres -p 5432
 ```
 
-# -------------- windows Server
+## -------------- windows Server
 
 ```cmd
 sc.exe create "MyFirstWindowsService" binPath="C:\app\MyFirstWindowsService.exe" start=Auto type=system      --install windows service
@@ -450,7 +552,7 @@ net localgroup "Remote Desktop Users" "dev" /add  #add dev user to remote deskto
 net localgroup "Remote Desktop Users" "dev" /delete  #delete 'dev' user from remote desktop group
 ```
 
-# -------------- Nuget Restore package
+## -------------- Nuget Restore package
 
 ```cmd
 nuget sources add -Name abcSource -Source https://nuget.dev.abc.com/nuget -UserName abc@abc.com -Password YourPasswordHere
@@ -460,24 +562,24 @@ nuget restore -PackagesDirectory .
 ./nuget.exe push -source "PartsUnlimitedShared" -ApiKey VSTS "C:\PartsUnlimited.Shared.1.0.0.nupkg"
 ```
 
-# -------------- OSX
+## -------------- OSX
 
 ```cmd
 /private/etc/hosts      -- path to hosts file on OSX
 du -sh *                -- list files/folder's size
 ```
 
-# -------------- Powershell
+## -------------- Powershell
 
 ```cmd
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned     #enable run ps1 on windows
 ```
 
-# -------------- Visual studio code
+## -------------- Visual studio code
 
-Ctrl K, S: Show all huthortcuts in VSCode
+Ctrl K, S: Show all shortcuts in VSCode
 
-# curl
+## curl
 
 ## GET request
 
@@ -499,31 +601,7 @@ curl -d @request.json -H 'Content-Type: application/json'
   -X PUT http://localhost:8082/spring-rest/foos/9
 ```
 
-# Nextdns
-
-Ssh to router and use these commmand
-
-```cmd
-nextdns start
-nextdns stop
-nextdns restart
-```
-
-Configure the local host to point to NextDNS or not:
-
-```cmd
-nextdns activate
-nextdns deactivate
-```
-
-logs and help
-
-```cmd
-nextdns log # Explore daemon logs:
-nextdns help # For more commands
-```
-
-# Useful alias
+## Useful alias
 
 ```cmd
 alias d="docker" 
