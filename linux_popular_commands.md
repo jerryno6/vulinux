@@ -476,7 +476,7 @@ ssh-import-id-gh <username> # import public ssh key from github then you can ssh
 ssh -p 222 -l vule 172.16.10.252   # remote the pc If it says couldn’t connect on port XXX
 ssh -p vule@172.16.10.252            # remote pc using user/password
 ssh -i "EC2.pem" ec2-user@3.21.145.23
-ssh root@SERVER_IPADDR -L 80:NODE_IPADDR:80 # ssh to remote SERVER and forward port 80 to a NODE machine
+ssh root@SERVER_IPADDR -L 80:NODE_IPADDR:80 # ssh tunnel to remote SERVER and forward port 80 to a NODE machine
 ssh root@SERVER_IPADDR -R 8080:127.0.0.1:3000 # ssh to remote SERVER and forwards connections from remote:8080 to local:3000
 
 #secure ssh server
