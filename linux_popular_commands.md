@@ -482,7 +482,7 @@ ssh root@SERVER_IPADDR -R 8080:127.0.0.1:3000 # ssh to remote SERVER and forward
 #secure ssh server
 sudo vi /etc/ssh/sshd_config
 sudo sed -i \
-  -e 's/#PermitRootLogin.*/PermitRootLogin no/g' \
+  -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
   -e 's/#PasswordAuthentication.*/PasswordAuthentication no/' \
   -e 's/#PubkeyAuthentication.*/PubkeyAuthentication yes/' \
   /etc/ssh/sshd_config
