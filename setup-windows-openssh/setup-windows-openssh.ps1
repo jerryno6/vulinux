@@ -243,7 +243,10 @@ function Ensure-FileContainsLines {
 
     $existing = @()
     if (Test-Path -Path $Path -PathType Leaf) {
-        $existing = Get-Content -Path $Path
+        $content = Get-Content -Path $Path
+        if ($null -ne $content) {
+            $existing = @($content)
+        }
     }
 
     foreach ($line in $Lines) {
@@ -252,12 +255,6 @@ function Ensure-FileContainsLines {
             $existing += $line
         }
     }
-}
-
-function Set-AdministratorAuthorizedKeysAcl {
-    param([string]$Path)
-
-    & icacls.exe $Path /inheritance:r /grant 'Administrators:F' /grant 'SYSTEM:F' | Out-Null
 }
 
 Assert-Administrator
@@ -292,13 +289,17 @@ if ($isAdministratorAccount) {
         New-Item -Path $authorizedKeysPath -ItemType File -Force | Out-Null
     }
 
+    Write-Host "Target account is administrator. Writing keys to administrators_authorized_keys"
+    Write-Host "Keys to import: $($publicKeys.Count)"
     Ensure-FileContainsLines -Path $authorizedKeysPath -Lines $publicKeys
-    Set-AdministratorAuthorizedKeysAcl -Path $authorizedKeysPath
 }
 else {
     $profilePath = Resolve-ProfilePath -AccountName $targetAccountName
     $sshDir = Join-Path -Path $profilePath -ChildPath '.ssh'
     $authorizedKeysPath = Join-Path -Path $sshDir -ChildPath 'authorized_keys'
+
+    Write-Host "Target account is NOT administrator. Writing keys to user .ssh directory"
+    Write-Host "Profile path: $profilePath"
 
     if (-not (Test-Path -Path $sshDir -PathType Container)) {
         New-Item -Path $sshDir -ItemType Directory -Force | Out-Null
@@ -308,6 +309,7 @@ else {
         New-Item -Path $authorizedKeysPath -ItemType File -Force | Out-Null
     }
 
+    Write-Host "Keys to import: $($publicKeys.Count)"
     Ensure-FileContainsLines -Path $authorizedKeysPath -Lines $publicKeys
 }
 
