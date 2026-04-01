@@ -1,5 +1,9 @@
 # Setup Windows OpenSSH Server and Import GitHub SSH Keys
 
+## To run from your PC:
+
+`& ([scriptblock]::Create((irm "https://raw.githubusercontent.com/jerryno6/vulinux/master/setup-windows-openssh/setup-windows-openssh.ps1"))) -GitHubUser "tomammy"`
+
 ## Description
 Run this script from an elevated PowerShell session on the Windows machine that will accept SSH connections.
 
