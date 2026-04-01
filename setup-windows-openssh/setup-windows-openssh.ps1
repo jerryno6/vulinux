@@ -99,7 +99,7 @@ function Get-GitHubPublicKeys {
         }
     }
 
-    return $keys
+    return ,$keys
 }
 
 function Resolve-GitHubUser {
