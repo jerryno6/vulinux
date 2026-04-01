@@ -30,6 +30,26 @@ function Test-IsAdministratorAccount {
         $candidates += "$env:COMPUTERNAME\$AccountName"
     }
 
+    try {
+        $currentIdentity = [Security.Principal.WindowsIdentity]::GetCurrent()
+        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal($currentIdentity)
+
+        if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+            foreach ($candidate in $candidates) {
+                try {
+                    $candidateSid = ([Security.Principal.NTAccount]$candidate).Translate([Security.Principal.SecurityIdentifier]).Value
+                    if ($candidateSid -eq $currentIdentity.User.Value) {
+                        return $true
+                    }
+                }
+                catch {
+                }
+            }
+        }
+    }
+    catch {
+    }
+
     $groupMemberSids = @()
 
     try {
@@ -228,7 +248,7 @@ function Ensure-FileContainsLines {
 
     foreach ($line in $Lines) {
         if ($existing -notcontains $line) {
-            Add-Content -Path $Path -Value $line
+            Add-Content -Path $Path -Value $line -Encoding ascii
             $existing += $line
         }
     }
