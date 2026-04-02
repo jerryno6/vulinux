@@ -277,7 +277,7 @@ $publicKeys = Get-GitHubPublicKeys -AccountName $GitHubUser
 
 Ensure-WindowsCapabilityInstalled -CapabilityName 'OpenSSH.Client~~~~0.0.1.0'
 Ensure-WindowsCapabilityInstalled -CapabilityName 'OpenSSH.Server~~~~0.0.1.0'
-Ensure-ServiceRunning -ServiceName 'sshd'
+Ensure-SshServiceRunning
 Ensure-SshFirewallRule
 
 $sshRoot = 'C:\ProgramData\ssh'
