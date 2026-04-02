@@ -150,6 +150,10 @@ function Ensure-WindowsCapabilityInstalled {
     }
 }
 
+function Ensure-SshServiceRunning {
+    Ensure-ServiceRunning -ServiceName 'sshd'
+}
+
 function Ensure-ServiceRunning {
     param([string]$ServiceName)
 
@@ -328,5 +332,7 @@ Write-Host "Target account is administrator: $isAdministratorAccount"
 Write-Host "Authorized keys file: $authorizedKeysPath"
 Write-Host "SSHD config file: $sshdConfigPath"
 Write-Host ''
-Write-Host 'Example tunnel command from a Mac client:'
+Write-Host 'Example tunnel command from a client:'
 Write-Host 'ssh -L 8889:192.168.1.90:3389 <windows-user>@<windows-server-ip>'
+Write-Host 'Then you can remote desktop to the server using localhost:8889 or 127.0.1.1:8889'
+Write-Host ''
