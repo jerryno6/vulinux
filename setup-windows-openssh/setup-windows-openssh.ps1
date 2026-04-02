@@ -325,10 +325,8 @@ Restart-Service -Name sshd
 
 Write-Host ''
 Write-Host 'OpenSSH setup is complete.'
-Write-Host "Imported GitHub user: $GitHubUser"
-Write-Host "Imported key count: $($publicKeys.Count)"
-Write-Host "Target Windows account: $targetAccountName"
-Write-Host "Target account is administrator: $isAdministratorAccount"
+Write-Host "Imported GitHub user: $GitHubUser, key count: $($publicKeys.Count)"
+Write-Host "Target Windows account: $targetAccountName is administrator: $isAdministratorAccount"
 Write-Host "Authorized keys file: $authorizedKeysPath"
 Write-Host "SSHD config file: $sshdConfigPath"
 Write-Host ''
